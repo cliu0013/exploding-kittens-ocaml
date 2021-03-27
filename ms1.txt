@@ -1,3 +1,9 @@
+************* Step 0 ************* 
+In your terminal, run the commands:
+$ make clean
+$ make docs
+And check out _doc.public/index.html for the documentation
+
 ************* Step 1:Load Json files. ************* 
 
 - Satisfactory Scope: Implement and unit test the Deck Module.
@@ -31,6 +37,8 @@ Kittens, Functionals, Bombs, and Diffuses.
   Bombs:
   4 Exploding Kitten
 
+- The implementation for the Deck Module in deck.ml
 
+- The unit tests in test.ml
 
 
