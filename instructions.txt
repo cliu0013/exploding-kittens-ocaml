@@ -1,0 +1,32 @@
+************* Step 1:Load Json files. ************* 
+- We represent the cards of the game in the .json file 
+(original.json) 
+
+- We have 56 cards in total, including 4 major genres of cards, which are 
+Kittens, Functionals, Bombs, and Diffuses.
+
+- The number of each specific kind of card is listed below:
+
+  Kittens:
+  4 Cattermelon 
+  4 Hairy Potato Cat
+  4 Tacocat
+  4 Beard Cat
+  4 Rainbow-Ralphing Cat
+
+  Functionals:
+  4 Nope
+  4 Attack
+  4 Skip
+  4 Favor
+  4 Shuffle
+  4 See The Future
+
+  6 Diffuses
+  4 Bombs
+
+
+
+
+
+************* 
