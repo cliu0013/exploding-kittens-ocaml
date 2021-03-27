@@ -1,11 +1,14 @@
 ************* Step 1:Load Json files. ************* 
+
+- Satisfactory Scope: Implement and unit test the Deck Module.
+
 - We represent the cards of the game in the .json file 
 (original.json) 
 
 - We have 56 cards in total, including 4 major genres of cards, which are 
 Kittens, Functionals, Bombs, and Diffuses.
 
-- The number of each specific kind of card is listed below:
+- The number of each specific kind of card is listed below classified as genres.
 
   Kittens:
   4 Cattermelon 
@@ -15,18 +18,19 @@ Kittens, Functionals, Bombs, and Diffuses.
   4 Rainbow-Ralphing Cat
 
   Functionals:
-  4 Nope
+  5 Nope
+  5 See The Future
   4 Attack
   4 Skip
   4 Favor
   4 Shuffle
-  4 See The Future
 
-  6 Diffuses
-  4 Bombs
+  Diffuses:
+  6 Diffuse
+
+  Bombs:
+  4 Exploding Kitten
 
 
 
 
-
-************* 

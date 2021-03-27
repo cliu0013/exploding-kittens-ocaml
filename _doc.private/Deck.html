@@ -46,15 +46,25 @@
 </div>
 
 
-<pre><span id="TYPEcard_id"><span class="keyword">type</span> <code class="type"></code>card_id</span> = <code class="type">string * int</code> </pre>
+<pre><span id="TYPEcard_id"><span class="keyword">type</span> <code class="type"></code>card_id</span> = <code class="type">string * string * int</code> </pre>
 <div class="info ">
 <div class="info-desc">
-<p>The type of card identifiers.</p>
+<p>The type of card identifiers represented using three-entry tuples.
+    The first entry is the genre of the card, the second entry is the
+    kind/name for the card, the third entry is the initial number of
+    this kind of card in the deck.</p>
 </div>
 </div>
 
 
 <pre><span id="TYPEcard_rem"><span class="keyword">type</span> <code class="type"></code>card_rem</span> = <code class="type">string * int</code> </pre>
+<div class="info ">
+<div class="info-desc">
+<p>The type of card information represented using two-entry tuples. The
+    first entry is the kind/name for the card, the second entry is
+    remaining number of this kind of card in the deck.</p>
+</div>
+</div>
 
 
 <pre><span id="VALfrom_json"><span class="keyword">val</span> from_json</span> : <code class="type">'a -> 'b</code></pre><div class="info ">
@@ -67,21 +77,24 @@
 <pre><span id="VALcards_start"><span class="keyword">val</span> cards_start</span> : <code class="type">'a -> 'b</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">cards_start d</code> is a list of the card identifiers of the player's
-    hand for the card deck <code class="code">d</code>.</p>
+    hand for the card deck <code class="code">d</code>. The rule of dealing the start hand for
+    the human player is to first exclude all Bombs and Diffuses from the
+    deck, deal 7 random cards with 1 Diffuse to the person, and then put
+    the removed Bombs and Diffuses back to the deck with a shuffle.</p>
 </div>
 </div>
 
 <pre><span id="VALcards_left"><span class="keyword">val</span> cards_left</span> : <code class="type">'a -> 'b</code></pre><div class="info ">
 <div class="info-desc">
-<p><code class="code">cards_left d</code> is a list of all of cards that could be drawn later
-    from the card deck <code class="code">d</code>.</p>
+<p><code class="code">cards_left d</code> is a list of all of cards that can be drawn from the
+    card deck <code class="code">d</code> later in the game.</p>
 </div>
 </div>
 
 <pre><span id="VALcards_used"><span class="keyword">val</span> cards_used</span> : <code class="type">'a -> 'b</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">cards_used d</code> is a list of all of cards that has been used and
-    cannot be drawn from the card deck <code class="code">d</code>.</p>
+    cannot be drawn from the card deck <code class="code">d</code> anymore.</p>
 </div>
 </div>
 

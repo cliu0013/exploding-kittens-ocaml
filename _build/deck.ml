@@ -2,7 +2,7 @@
 
 type d = None
 
-type card_id = string * int
+type card_id = string * string * int
 
 type card_rem = string * int
 

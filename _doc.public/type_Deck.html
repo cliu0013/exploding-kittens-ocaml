@@ -12,7 +12,7 @@
 <body>
 <code class="code"><span class="keyword">sig</span><br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;d<br>
-&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;card_id&nbsp;=&nbsp;string&nbsp;*&nbsp;int<br>
+&nbsp;&nbsp;<span class="keyword">type</span>&nbsp;card_id&nbsp;=&nbsp;string&nbsp;*&nbsp;string&nbsp;*&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">type</span>&nbsp;card_rem&nbsp;=&nbsp;string&nbsp;*&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;from_json&nbsp;:&nbsp;<span class="constructor">Yojson</span>.<span class="constructor">Basic</span>.t&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Deck</span>.d<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;cards_start&nbsp;:&nbsp;<span class="constructor">Deck</span>.d&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Deck</span>.card_id&nbsp;list<br>
