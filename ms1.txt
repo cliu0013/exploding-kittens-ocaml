@@ -1,8 +1,10 @@
 ************* Step 0 ************* 
+
 In your terminal, run the commands:
 $ make clean
 $ make docs
 And check out _doc.public/index.html for the documentation
+
 
 ************* Step 1:Load Json files. ************* 
 
