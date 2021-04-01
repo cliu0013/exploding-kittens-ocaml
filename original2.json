@@ -1,54 +1,67 @@
 {
   "cards": [
     {
+      "genre": "kittens", 
       "name": "Cattermelon",
       "number": 4
     },
     {
+      "genre": "kittens", 
       "name": "Hairy Potato Cat",
       "number": 4
     },
     {
+      "genre": "kittens", 
       "name": "Tacocat",
       "number": 4
     },
     {
+      "genre": "kittens", 
       "name": "Beard Cat",
       "number": 4
     },
     {
+      "genre": "kittens", 
       "name": "Rainbow-Ralphing Cat",
       "number": 4
     },
     {
+      "genre": "functionals",
       "name": "Nope",
       "number": 5
     },
     {
+      "genre": "functionals",
       "name": "See The Future",
       "number": 5
     },
     {
+      "genre": "functionals",
       "name": "Attack",
       "number": 4
     },
     {
+      "genre": "functionals",
       "name": "Skip",
       "number": 4
     },
     {
+      "genre": "functionals",
       "name": "Favor",
       "number": 4
     },
     {
+      "genre": "functionals",
       "name": "Shuffle",
       "number": 4
     },
     {
+      "genre": "defuse",
       "name": "Defuse",
       "number": 6
     },
     {
+      "genre": "bomb",
       "name": "Exploding Kitten",
       "number": 4
     }
