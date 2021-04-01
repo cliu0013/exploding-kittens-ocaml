@@ -16,6 +16,8 @@ type d = {
   cards_info : card_rem list;
 }
 
+let empty_card = { name = ""; genre = "" }
+
 (* TODO: replace [unit] with a type of your own design. *)
 open Yojson.Basic.Util
 
@@ -61,7 +63,7 @@ let from_json json =
           genre = "functionals";
         }
       in
-      j |> member "functionals" |> to_list |> List.map get_fxns 
+      j |> member "functionals" |> to_list |> List.map get_fxns
     in
     let diffuses =
       let get_diffuses v =
@@ -95,7 +97,7 @@ let from_json json =
 
 let cards_start d = failwith "unimplemented"
 
-let cards_left d = d.cards_left 
+let cards_left d = d.cards_left
 
 let cards_used d = d.cards_used
 
@@ -103,12 +105,9 @@ let cards_info d = d.cards_info
 
 let draw_card d = failwith "unimplemented"
 
-let peak d = 
-  match d.cards_left with 
-  | [] -> []
-  | h :: t -> 
+let peak d = match d.cards_left with [] -> empty_card | h :: t -> h
 
+let pop d = match d.cards_left with [] -> empty_card | h :: t -> h
 
-let pop d = failwith "unimplemented"
-
+(* what happens to old d? *)
 let append d = failwith "unimplemented"
