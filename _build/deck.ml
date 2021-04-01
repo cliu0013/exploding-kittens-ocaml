@@ -21,27 +21,38 @@ open Yojson.Basic.Util
 
 let from_json json =
   let parse_genres j =
-    let rec map f = function [] -> [] | h :: t -> f h :: map f t in
+    (* let rec map f = function [] -> [] | h :: t -> f h :: map f t in *)
+    (* let kittens = let rec get_kittens v = function | [] -> [] | h ::
+       t -> let reps = h |> member "number" |> to_string |>
+       int_of_string in let i = ref 0 in let acc = ref [] in let
+       template = { name = h |> member "name" |> to_string; genre =
+       "kittens"; } in (* while !i < reps do acc := !acc @ [template];
+       incr i done *) let acc = ref [] in !acc :: get_kittens t in j |>
+       member "kittens" |> to_list |> get_kittens in *)
     let kittens =
-      let rec get_kittens v = function
+      let get_kittens v =
+        { name = v |> member "name" |> to_string; genre = "kittens" }
+      in
+      let rec multi_map f lst = function
         | [] -> []
         | h :: t ->
-            let reps =
+            let copies =
               h |> member "number" |> to_string |> int_of_string
             in
+            let acc = ref [] in
             let i = ref 0 in
-            let acc = ref [] in
             let template =
-              {
-                name = h |> member "name" |> to_string;
-                genre = "kittens";
-              }
+              f h
+              (* { name = h |> member "name" |> to_string; genre =
+                 "kittens"; } *)
             in
-            (* while !i < reps do acc := !acc @ [template]; incr i done *)
-            let acc = ref [] in
-            !acc :: get_kittens t
+            while !i < copies do
+              incr i;
+              acc := !acc @ [ template ]
+            done;
+            !acc @ multi_map f t
       in
-      j |> member "kittens" |> to_list |> get_kittens
+      j |> member "kittens" |> to_list |> multi_map get_kittens
     in
     let fxns =
       let get_fxns v =
@@ -50,7 +61,7 @@ let from_json json =
           genre = "functionals";
         }
       in
-      j |> member "functionals" |> to_list |> List.map get_fxns
+      j |> member "functionals" |> to_list |> List.map get_fxns 
     in
     let diffuses =
       let get_diffuses v =
@@ -84,15 +95,19 @@ let from_json json =
 
 let cards_start d = failwith "unimplemented"
 
-let cards_left d = failwith "unimplemented"
+let cards_left d = d.cards_left 
 
-let cards_used d = failwith "unimplemented"
+let cards_used d = d.cards_used
 
-let cards_info d = failwith "unimplemented"
+let cards_info d = d.cards_info
 
 let draw_card d = failwith "unimplemented"
 
-let peak d = failwith "unimplemented"
+let peak d = 
+  match d.cards_left with 
+  | [] -> []
+  | h :: t -> 
+
 
 let pop d = failwith "unimplemented"
 

@@ -1,0 +1,56 @@
+{
+  "cards": [
+    {
+      "name": "Cattermelon",
+      "number": 4
+    },
+    {
+      "name": "Hairy Potato Cat",
+      "number": 4
+    },
+    {
+      "name": "Tacocat",
+      "number": 4
+    },
+    {
+      "name": "Beard Cat",
+      "number": 4
+    },
+    {
+      "name": "Rainbow-Ralphing Cat",
+      "number": 4
+    },
+    {
+      "name": "Nope",
+      "number": 5
+    },
+    {
+      "name": "See The Future",
+      "number": 5
+    },
+    {
+      "name": "Attack",
+      "number": 4
+    },
+    {
+      "name": "Skip",
+      "number": 4
+    },
+    {
+      "name": "Favor",
+      "number": 4
+    },
+    {
+      "name": "Shuffle",
+      "number": 4
+    },
+    {
+      "name": "Defuse",
+      "number": 6
+    },
+    {
+      "name": "Exploding Kitten",
+      "number": 4
+    }
+  ]
+}
