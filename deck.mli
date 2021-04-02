@@ -26,6 +26,7 @@
       type card_rem = {
         name : string;
         copies : int;
+        genre: string;
       }
       
       (** The type representing the card deck. *)
@@ -69,5 +70,5 @@
       
       val draw_card : d -> d
       
-      val get_hand : p -> card_id list
+      (* val get_hand : p -> card_id list *)
       

@@ -1,1 +1,1 @@
-deck.ml: Yojson
+deck.ml: List Yojson
