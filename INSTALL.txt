@@ -1,0 +1,8 @@
+The modules for this game do not require outside libraries.
+
+1. Run [make clean] to delete any old files generated from previous runs.
+
+2. Run [make build] to generate the OCaml build. 
+
+3. Run [make play] to start the game. The terminal will should now 
+   display your initial hand that contains 1 Defuse and 7 non-Bomb cards.
