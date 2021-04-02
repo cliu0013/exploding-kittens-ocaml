@@ -1,7 +1,5 @@
 (** [play_game f] starts the adventure in file [f]. *)
 
-open Deck
-
 let play_game f =
   try
     let d = Yojson.Basic.from_file f |> Deck.from_json in
