@@ -7,7 +7,7 @@ let play_game f =
     let d = Yojson.Basic.from_file f |> Deck.from_json in
     print_newline ();
     let d_hand_tuple = Deck.game_start d in
-    let d = fst d_hand_tuple in
+    (* let d = fst d_hand_tuple in *)
     let p = snd d_hand_tuple in
     ANSITerminal.print_string [ ANSITerminal.green ]
       "\n\
