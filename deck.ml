@@ -29,7 +29,6 @@ type p = {
 
 let empty_card = { name = ""; genre = "" }
 
-(* TODO: replace [unit] with a type of your own design. *)
 open Yojson.Basic.Util
 
 let get_a_kind card_list new_kind =
@@ -62,21 +61,10 @@ let get_one_card_info c =
 let get_cards_info json =
   json |> member "cards" |> to_list |> List.map get_one_card_info
 
+(* from_json *)
 let from_json json =
-  (* let parse_genres j = let kittens = let get_kittens v = { name = v
-     |> member "name" |> to_string; genre = "kittens" } in let fxns =
-     let get_fxns v = { name = v |> member "name" |> to_string; genre =
-     "functionals"; } in j |> member "functionals" |> to_list |>
-     List.map get_fxns in kittens @ fxns @ diffuses @ bombs in *)
-  (* let get_genres c = { name = c |> member "name" |> to_string; genre
-     = c |> member "genre" |> to_string; } in let parse_cards j = j |>
-     member "cards" |> to_list |> List.map get_genres in *)
   let cards_info = json |> get_cards_info in
   let cards_left = cards_info |> get_rems_start [] in
-  (* let rec parse_cards card_rems acc1= let rec parse_rec cards acc2 =
-     match cards with | [] -> [] | h :: t -> (* h : card rem *)
-
-     in parse_rec card_rems [] in parse_cards cards_info [] in *)
   let d_of_json j =
     {
       cards_used : card_id list = [];
@@ -88,7 +76,50 @@ let from_json json =
 
 (* failwith "unimplemented" *)
 
-let cards_start d = failwith "unimplemented"
+let rec get_defuse acc d player =
+  match d.cards_left with
+  | [] -> failwith "not possible"
+  | h :: t ->
+      if h.genre <> "defuse" then
+        (* no update on the info yet for MS1 *)
+        let d = { d with cards_left = t } in
+        let acc = h :: acc in
+        get_defuse acc d player
+      else
+        let d = { d with cards_left = acc @ t } in
+        let player = { player with hand = [ h ] } in
+        (d, player)
+
+let rec draw_card d player n =
+  let hand = player.hand in
+  match n with
+  | 0 -> (d, player)
+  | n_l -> (
+      match d.cards_left with
+      | h :: t ->
+          if h.genre <> "bomb" then
+            (* no update on the info yet for MS1 *)
+            let d = { d with cards_left = t } in
+            let p = { player with hand = h :: hand } in
+            draw_card d p (n_l - 1)
+          else
+            let d = { d with cards_left = t @ [ h ] } in
+            draw_card d player n_l
+      | _ -> failwith "Not possible")
+
+(* shuffle
+   (https://stackoverflow.com/questions/15095541/how-to-shuffle-list-in-on-in-ocaml) *)
+let shuffle l =
+  let nd = List.map (fun c -> (Random.bits (), c)) l in
+  let sond = List.sort compare nd in
+  List.map snd sond
+
+let game_start d =
+  let d = { d with cards_left = shuffle d.cards_left } in
+  let tup = get_defuse [] d { hand = []; id = 0 } in
+  let d = fst tup in
+  let user = snd tup in
+  draw_card d user 7
 
 let cards_left d = d.cards_left
 
@@ -98,7 +129,7 @@ let cards_info d = d.cards_info
 
 let draw_card d = failwith "unimplemented"
 
-let peak d = match d.cards_left with [] -> empty_card | h :: t -> h
+let peek d = match d.cards_left with [] -> empty_card | h :: t -> h
 
 let pop d =
   (* match d.cards_left with | [] -> empty_card | h :: t -> (* update d
