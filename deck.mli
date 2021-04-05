@@ -64,6 +64,8 @@ val cards_used : d -> card_id list
     card with the number of that type of cards left in the deck [d]. *)
 val cards_info : d -> card_rem list
 
-val draw_card : d -> d
+val draw_card : d -> player -> int -> d * player
+
+val shuffle : card_id list -> card_id list
 
 (* val get_hand : p -> card_id list *)

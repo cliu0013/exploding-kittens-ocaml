@@ -109,10 +109,16 @@ let rec draw_card d player n =
 
 (* shuffle
    (https://stackoverflow.com/questions/15095541/how-to-shuffle-list-in-on-in-ocaml) *)
-let shuffle l =
-  let nd = List.map (fun c -> (Random.bits (), c)) l in
-  let sond = List.sort compare nd in
-  List.map snd sond
+(* let shuffle l = let nd = List.map (fun c -> (Random.bits (), c)) l in
+   let sond = List.sort compare nd in List.map snd sond *)
+let rec shuffle = function
+  | [] -> []
+  | [ single ] -> [ single ]
+  | list ->
+      let before, after =
+        List.partition (fun elt -> Random.bool ()) list
+      in
+      List.rev_append (shuffle before) (shuffle after)
 
 let game_start d =
   let d = { d with cards_left = shuffle d.cards_left } in
@@ -126,8 +132,6 @@ let cards_left d = d.cards_left
 let cards_used d = d.cards_used
 
 let cards_info d = d.cards_info
-
-let draw_card d = failwith "unimplemented"
 
 let peek d = match d.cards_left with [] -> empty_card | h :: t -> h
 
