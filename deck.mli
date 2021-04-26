@@ -1,4 +1,4 @@
-(** Represent the deck of cards and the players for the Exploding
+(** Represents the deck of cards and the players for the Exploding
     Kittens game. *)
 
 (** AF: [st] the states for the players. [BOMBED] means the player just
@@ -83,6 +83,10 @@ val shuffle : card_id list -> card_id list
     with a shuffle. [t = (d, p)] would be the return value where there
     will be [k] number of players in [p] including the human user. *)
 val game_start : d -> int -> t
+
+(** [get_hand t] is a list of all of cards that are in the hand of the
+    human user. *)
+val get_hand : t -> card_id list
 
 (** [cards_left t] is a list of all of cards that can be drawn in later
     game. *)

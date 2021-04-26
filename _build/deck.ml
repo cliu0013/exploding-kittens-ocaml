@@ -189,6 +189,10 @@ let game_start d num_player =
       let p = { ai; user } in
       sort_palyers_hands (d, p)
 
+let get_hand t =
+  let player = (snd t).user in
+  player.hand
+
 let cards_left t =
   let d = fst t in
   d.cards_left

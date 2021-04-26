@@ -1,4 +1,22 @@
 (** [play_game f] starts the adventure in file [f]. *)
+let print_ai_hands (t : Deck.t) =
+  let p = snd t in
+  let ai = p.ai in
+  let rec print_one_ai (ai : Deck.player list) =
+    match ai with
+    | [] -> ()
+    | h :: rest ->
+        ANSITerminal.print_string [ ANSITerminal.red ]
+          ("\n********** AI id = " ^ string_of_int h.id
+         ^ " hand (TEST ONLY): **********\n");
+        print_endline
+          (List.map
+             (fun (ele : Deck.card_id) -> ele.name ^ ": " ^ ele.genre)
+             h.hand
+          |> String.concat "\n");
+        print_one_ai rest
+  in
+  print_one_ai ai
 
 let play_game f =
   try
@@ -42,6 +60,7 @@ let play_game f =
         print_endline
           ("Total number of cards left: "
           ^ string_of_int (Deck.num_cards d));
+        (* TEST ONLY *)
         ANSITerminal.print_string [ ANSITerminal.red ]
           "\n********** Cards Info (TEST ONLY): **********\n";
         print_endline
@@ -49,7 +68,8 @@ let play_game f =
              (fun (h : Deck.card_rem) ->
                h.name ^ ", " ^ h.genre ^ ": " ^ string_of_int h.copies)
              d.cards_info
-          |> String.concat "\n")
+          |> String.concat "\n");
+        print_ai_hands (d, p)
   with e ->
     ANSITerminal.print_string [ ANSITerminal.red ]
       "Something went wrong (e.g. File Not Found). execute < make play \
