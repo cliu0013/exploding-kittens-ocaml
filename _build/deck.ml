@@ -1,4 +1,3 @@
-(* Note: You may introduce new code anywhere in this file. *)
 type st =
   | BOMBED
   | SAFE
@@ -26,7 +25,6 @@ type d = {
 
 type player_id = int
 
-(* if id = 0 it's the human player *)
 type player = {
   hand : card_id list;
   id : player_id;
@@ -85,7 +83,6 @@ let from_json json =
   in
   d_of_json json
 
-(* failwith "unimplemented" *)
 let decrease_rem_info lst card_name =
   let f ele =
     if ele.name = card_name then { ele with copies = ele.copies - 1 }
@@ -96,15 +93,14 @@ let decrease_rem_info lst card_name =
 let rec get_defuse acc d player =
   match d.cards_left with
   | [] -> failwith "not possible"
-  | h :: t ->
+  | h :: rest ->
       if h.genre <> "defuse" then
-        (* no update on the info yet for MS1 *)
-        let d = { d with cards_left = t } in
+        let d = { d with cards_left = rest } in
         let acc = h :: acc in
         get_defuse acc d player
       else
         let cards_rem = decrease_rem_info d.cards_info h.name in
-        let d = { d with cards_left = acc @ t } in
+        let d = { d with cards_left = acc @ rest } in
         let d = { d with cards_info = cards_rem } in
         let player = { player with hand = [ h ] } in
         (d, player)
@@ -321,3 +317,8 @@ let player_have_card t player_id card_name =
   let p = snd t in
   let player = find_player p player_id in
   have_card player.hand card_name
+
+let used_have_card t card_name =
+  let d = fst t in
+  let used = d.cards_used in
+  have_card used card_name
