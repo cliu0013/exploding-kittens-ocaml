@@ -4,9 +4,9 @@ let play_game f =
   try
     let d = Yojson.Basic.from_file f |> Deck.from_json in
     print_newline ();
-    let d_hand_tuple = Deck.game_start d in
+    let d_hands_tuple = Deck.game_start d 3 in
     (* let d = fst d_hand_tuple in *)
-    let p = snd d_hand_tuple in
+    let p = snd d_hands_tuple in
     ANSITerminal.print_string [ ANSITerminal.green ]
       "\n\
        ********** Your initial hand of cards (1 Defuse and 7 others): \
@@ -14,7 +14,7 @@ let play_game f =
     print_endline
       (List.map
          (fun (h : Deck.card_id) -> h.name ^ ": " ^ h.genre)
-         p.hand
+         p.user.hand
       |> String.concat "\n")
   with e ->
     ANSITerminal.print_string [ ANSITerminal.red ]

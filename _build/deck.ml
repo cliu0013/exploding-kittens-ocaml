@@ -17,6 +17,7 @@ type d = {
   cards_info : card_rem list;
 }
 
+(* if id = 0 it's the human player *)
 type player = {
   hand : card_id list;
   id : int;
@@ -26,8 +27,6 @@ type p = {
   ai : player list;
   user : player;
 }
-
-let empty_card = { name = ""; genre = "" }
 
 open Yojson.Basic.Util
 
@@ -90,7 +89,7 @@ let rec get_defuse acc d player =
         let player = { player with hand = [ h ] } in
         (d, player)
 
-let rec draw_card d player n =
+let rec draw_card_safe d player n =
   let hand = player.hand in
   match n with
   | 0 -> (d, player)
@@ -101,44 +100,58 @@ let rec draw_card d player n =
             (* no update on the info yet for MS1 *)
             let d = { d with cards_left = t } in
             let p = { player with hand = h :: hand } in
-            draw_card d p (n_l - 1)
+            draw_card_safe d p (n_l - 1)
           else
             let d = { d with cards_left = t @ [ h ] } in
-            draw_card d player n_l
+            draw_card_safe d player n_l
       | _ -> failwith "Not possible")
 
 (* shuffle
    (https://stackoverflow.com/questions/15095541/how-to-shuffle-list-in-on-in-ocaml) *)
-(* let shuffle l = let nd = List.map (fun c -> (Random.bits (), c)) l in
-   let sond = List.sort compare nd in List.map snd sond *)
-let rec shuffle = function
-  | [] -> []
-  | [ single ] -> [ single ]
-  | list ->
-      let before, after =
-        List.partition (fun elt -> Random.bool ()) list
-      in
-      List.rev_append (shuffle before) (shuffle after)
+let shuffle l =
+  let nd = List.map (fun c -> (Random.bits (), c)) l in
+  let sond = List.sort compare nd in
+  List.map snd sond
 
-let game_start d =
+let rec players_init acc num_player =
+  match num_player with
+  | 0 -> acc
+  | n ->
+      let acc = { hand = []; id = n - 1 } :: acc in
+      players_init acc (n - 1)
+
+let game_start_one_player d player_id =
   let d = { d with cards_left = shuffle d.cards_left } in
-  let tup = get_defuse [] d { hand = []; id = 0 } in
+  let tup = get_defuse [] d { hand = []; id = player_id } in
   let d = fst tup in
   let user = snd tup in
-  draw_card d user 7
+  draw_card_safe d user 7
+
+let rec game_start_helper acc d num_player =
+  match num_player with
+  | 0 -> (d, acc)
+  | n ->
+      let res = game_start_one_player d (n - 1) in
+      let d = fst res in
+      let player = snd res in
+      let acc = player :: acc in
+      let num_player = num_player - 1 in
+      game_start_helper acc d num_player
+
+let game_start d num_player =
+  let res = game_start_helper [] d num_player in
+  let players = snd res in
+  let d = fst res in
+  match players with
+  | [] -> failwith "violate precondition"
+  | h :: t ->
+      let user = h in
+      let ai = t in
+      let p = { ai; user } in
+      (d, p)
 
 let cards_left d = d.cards_left
 
 let cards_used d = d.cards_used
 
 let cards_info d = d.cards_info
-
-let peek d = match d.cards_left with [] -> empty_card | h :: t -> h
-
-let pop d =
-  (* match d.cards_left with | [] -> empty_card | h :: t -> (* update d
-     to not have the card *) d.cards_left h *)
-  failwith "unimplemented"
-
-(* what happens to old d? *)
-let append d = failwith "unimplemented"

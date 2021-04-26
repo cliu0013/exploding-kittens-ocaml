@@ -50,7 +50,7 @@ val from_json : Yojson.Basic.t -> d
     the human player is to first exclude all Bombs and Diffuses from the
     deck, deal 7 random cards with 1 Diffuse to the person, and then put
     the removed Bombs and Diffuses back to the deck with a shuffle. *)
-val game_start : d -> d * player
+val game_start : d -> int -> d * p
 
 (** [cards_left d] is a list of all of cards that can be drawn from the
     card deck [d] later in the game. *)
@@ -64,7 +64,7 @@ val cards_used : d -> card_id list
     card with the number of that type of cards left in the deck [d]. *)
 val cards_info : d -> card_rem list
 
-val draw_card : d -> player -> int -> d * player
+(* val draw_card_safe : d -> player -> int -> d * player *)
 
 val shuffle : card_id list -> card_id list
 
