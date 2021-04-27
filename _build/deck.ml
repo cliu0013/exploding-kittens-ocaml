@@ -326,3 +326,8 @@ let used_have_card t card_name =
   let d = fst t in
   let used = d.cards_used in
   have_card used card_name
+
+let check_state t player_id : st =
+  let p = snd t in
+  let player = find_player p player_id in
+  player.state

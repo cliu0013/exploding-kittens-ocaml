@@ -139,3 +139,7 @@ val used_have_card : t -> card_name -> bool
     [card_name] in the hand of the player with id equal to [player_id];
     otherwise returns false. *)
 val player_have_card : t -> player_id -> card_name -> bool
+
+(* [check_state] returns the state of the given player. States are of
+   type st. *)
+val check_state : t -> player_id -> st
