@@ -57,10 +57,32 @@ let turn_start e =
   let curr_state = Deck.check_state e.game curr_id in
   match curr_state with
   | SAFE ->
-      (* prompt user to enter a card name *)
-      (* type "PASS" to draw a card and pass their turn *)
-      { e with game = Deck.draw_card e.game curr_id }
-      (* otherwise: use_card with input from user prompt*)
+      let rec prompt_user msg =
+        (* prompt user to enter a card name *)
+        print_endline msg;
+        print_string "> ";
+        match read_line () with
+        | exception End_of_file -> failwith "read_line failure"
+        | str ->
+            if str = "Pass" then
+              (* type "Pass" to draw a card and pass their turn *)
+              { e with game = Deck.draw_card e.game curr_id }
+              (* try to find and use card*)
+            else if Deck.player_have_card e.game curr_id str then
+              { e with game = Deck.use_card e.game curr_id str }
+              (* print invalid card name -- retry *)
+            else
+              let msg =
+                "Invalid card name. Please try again, or type 'Pass' \
+                 to pass your turn.\n"
+              in
+              prompt_user msg
+      in
+      let msg =
+        "What card would you like to use? Type 'Pass' if you would \
+         like to pass your and draw a card.\n"
+      in
+      prompt_user msg
   | BOMBED -> failwith "BOMBED unimplemented"
   | ATTACKED -> failwith "ATTACKED unimplemented"
   | DEAD -> failwith "DEAD unimplemented"

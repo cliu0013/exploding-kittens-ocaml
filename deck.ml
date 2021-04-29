@@ -236,6 +236,7 @@ let find_player p player_id =
     let f ele = ele.id = player_id in
     List.filter f p.ai |> List.hd
 
+(*updates the given player_id in p with argued [player] info *)
 let mutate_p p player player_id =
   if player_id = 0 then { p with user = player }
   else
