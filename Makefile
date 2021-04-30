@@ -1,4 +1,4 @@
-MODULES= author deck main
+MODULES= author deck move main
 OBJECTS=$(MODULES:=.cmo)
 MLS=$(MODULES:=.ml)
 MLIS=$(MODULES:=.mli)

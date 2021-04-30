@@ -143,3 +143,5 @@ val player_have_card : t -> player_id -> card_name -> bool
 (* [check_state] returns the state of the given player. States are of
    type st. *)
 val check_state : t -> player_id -> st
+
+val find_player : p -> player_id -> player
