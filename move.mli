@@ -43,7 +43,7 @@ val engine_init : t -> e
 (* [turn_start] takes in an engine *)
 (* -checks player state *)
 (* if player is safe, allows them to make a move *)
-val turn_start : t -> e
+val turn_start : e -> e
 
 (* fxn to check game status given an engine*)
-val check_state : e -> game_state
+(* val check_state : e -> game_state *)

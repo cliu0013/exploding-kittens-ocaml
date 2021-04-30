@@ -18,12 +18,20 @@ let print_ai_hands (t : Deck.t) =
   in
   print_one_ai ai
 
+let check_next (e : Move.e) =
+  (* let next_player = e.curr_id |> string_of_int in let after =
+     e.next_id |> string_of_int in let msg = "the next player is " ^
+     next_player ^ " and after that is " ^ after in *)
+  let msg = "turn has ended" in
+  print_endline msg
+
 let play_game f =
   try
     ANSITerminal.print_string [ ANSITerminal.blue ]
       "\n\nValid file name.\n";
     print_endline
-      "Please enter the number of AI players you want to play against\n";
+      "Please enter the number of AI players you want to play against \
+       (1 to 5, inclusive)\n";
     print_string "> ";
     match read_line () with
     | exception End_of_file -> ()
@@ -69,7 +77,13 @@ let play_game f =
                h.name ^ ", " ^ h.genre ^ ": " ^ string_of_int h.copies)
              d.cards_info
           |> String.concat "\n");
-        print_ai_hands (d, p)
+        print_ai_hands (d, p);
+        print_endline "good to go";
+        (* prompt user for next move *)
+        let t = (d, p) in
+        let e1 = Move.engine_init t in
+        let e2 = Move.turn_start e1 in
+        check_next e2
   with e ->
     ANSITerminal.print_string [ ANSITerminal.red ]
       "Something went wrong (e.g. File Not Found). execute < make play \
@@ -79,14 +93,12 @@ let play_game f =
 (** [main ()] prompts for the game to play, then starts it. *)
 
 let main () =
-  ANSITerminal.print_string [ ANSITerminal.blue ]
-    "\n\nWelcome to the original Exploding Kittens Kit.\n";
-  print_endline
-    "Please enter the name of the game file you want to load\n";
-  print_string "> ";
-  match read_line () with
-  | exception End_of_file -> ()
-  | file_name -> play_game file_name
+  (* ANSITerminal.print_string [ ANSITerminal.blue ] "\n\nWelcome to the
+     original Exploding Kittens Kit.\n"; print_endline "Please enter the
+     name of the game file you want to load\n"; print_string "> "; match
+     read_line () with | exception End_of_file -> () | file_name ->
+     play_game file_name *)
+  play_game "original.json"
 
 (* Execute the game engine. *)
 let () = main ()
