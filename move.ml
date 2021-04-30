@@ -146,7 +146,10 @@ let rec turn_start e =
            like to end your turn and draw a card.\n"
         in
         prompt_user msg
-    | BOMBED -> failwith "BOMBED unimplemented"
+    | BOMBED ->
+        ANSITerminal.print_string [ ANSITerminal.green ]
+          "\n********** You are bombed and you lose XD **********\n";
+        e
     | ATTACKED -> failwith "ATTACKED unimplemented"
     | DEAD -> failwith "DEAD unimplemented"
 

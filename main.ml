@@ -22,7 +22,7 @@ let check_next (e : Move.e) =
   (* let next_player = e.curr_id |> string_of_int in let after =
      e.next_id |> string_of_int in let msg = "the next player is " ^
      next_player ^ " and after that is " ^ after in *)
-  let msg = "turn has ended" in
+  let msg = "Game has ended" in
   print_endline msg
 
 let play_game f =

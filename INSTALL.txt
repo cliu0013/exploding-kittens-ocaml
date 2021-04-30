@@ -7,14 +7,26 @@ The modules for this game do not require outside libraries.
 3. Run [make play] to start the game. 
 
 4. The terminal will prompt you to enter a number for the number of AI players.
-   The number must be from 1 to 5, inclusive.
-
-5. The terminal should now display your initial hand that contains 
+   Type in an integer number from 1 to 5, inclusively. Then hit [enter].
+   
+   The terminal should now display your initial hand that contains 
    1 Defuse and 7 non-Bomb cards.
 
-6. The terminal will now prompt you to use cards.To use a card, simply type 
-   in that card's name, or type 'Pass' to end the turn and draw a card. 
-   All inputs are case sensitive.
+6. The terminal will now prompt you to play your turn. To use a card, simply 
+   type in that card's name, or type in [Pass] to end the turn and draw a card. 
+   All inputs are case sensitive. Then hit [enter]. 
+
+   If your decide to draw a card but your mistyped the card name, a new prompt 
+   would be popped to ask you input something new and reprint your hand.
+   If you use a card in your hand, it will be no longer in your hand. 
+   If you pass the turn and draw a card, the AI players will draw cards and 
+   pass the turn back to you. 
+
+   When it's your next turn, you will notice there is a new card in your hand 
+   if you didn't draw a card. If you draw a bomb, you will be bombed and 
+   lose the game. You will draw a bomb sooner or later. 
+   We don't have the mechanism to let you win the game for this demo currently, 
+   sorry. 
 
 7. Enjoy :)
 

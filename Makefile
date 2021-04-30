@@ -42,4 +42,4 @@ docs-private: build
 
 clean:
 	ocamlbuild -clean
-	rm -rf _doc.public _doc.private *.zip
+	rm -rf _doc.public _doc.private *.zip *.byte
