@@ -318,6 +318,19 @@ let transfer_card t player_id1 player_id2 name =
     (d, p)
   else t
 
+(* returns a random card name from the gievn player's hand *)
+let random_card (t : t) (player_id : int) : string =
+  let player = find_player (snd t) player_id in
+  let hand = player.hand in
+  let max = hand |> List.length in
+  let card = List.nth hand (Random.int max) in
+  card.name
+
+let transfer_card_rand t player_id1 player_id2 =
+  (* get a random card name from p1 *)
+  let name = random_card t player_id1 in
+  transfer_card t player_id1 player_id2 name
+
 let take_card t player_id name =
   let d = fst t in
   let p = snd t in
@@ -379,3 +392,8 @@ let is_id t player_id : bool =
   let p = snd t in
   let f (ele : player) = ele.id = player_id in
   List.filter f p.ai |> List.length > 0
+
+let is_card (t : t) (name : string) : bool =
+  let directory = (fst t).directory in
+  let f (ele : card_id) = ele.name = name in
+  List.exists f directory

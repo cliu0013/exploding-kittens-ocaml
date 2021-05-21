@@ -127,6 +127,11 @@ val use_card : t -> player_id -> card_name -> int -> t
     this RI. *)
 val transfer_card : t -> player_id -> player_id -> card_name -> t
 
+(** [transfer_card_rand t player_id1 player_id2 card_name] is the same
+    as the non-rand version, except that a random card is transferred
+    rather than a specified card*)
+val transfer_card_rand : t -> player_id -> player_id -> t
+
 (** [take_card t player_id card_name] let player whose id is [player_id]
     to take a card from the used cards of the deck. ** RI: the used
     cards in the deck has the card. Should use
@@ -151,4 +156,10 @@ val find_player : p -> player_id -> player
 (* [get_genre] takes in a card name and returns the genre for that card *)
 val get_genre : t -> string -> string
 
-val num_copies : t -> int -> string -> int
+val num_copies : t -> player_id -> string -> int
+
+(* [is_id] returns a T/F for if the provided player_id actually exists *)
+val is_id : t -> player_id -> bool
+
+(* [is_card] returns T/F based on if [name] is a valid card name *)
+val is_card : t -> string -> bool

@@ -140,9 +140,17 @@ let rec turn_start e =
                    str num } in let p = snd e.game in print_player2 p
                    curr_id; turn_start e *)
                 (* print invalid card name -- retry *)
+              else if Deck.is_card e.game str then (
+                (* if the card exists but the player doesn't own it *)
+                let msg =
+                  "You don't have that card! Please check your \
+                   spelling, or type 'Pass' to pass your turn.\n"
+                in
+                let p = snd e.game in
+                print_player p;
+                prompt_user msg)
               else
-                (* TODO: separate logic for cards that exist but are not
-                   in hand *)
+                (* if the card just isn't in the game *)
                 let msg =
                   "That card doesn't exist! Please check your \
                    spelling, or type 'Pass' to pass your turn.\n"
@@ -192,12 +200,15 @@ and manage_spec_card (e : e) curr_id str prompt =
               in
               prompt msg
           | 2 ->
-              multi_kittens 2;
+              let t = multi_kittens e 2 in
+              let e = { e with game = t } in
               let e = { e with game = Deck.use_card t curr_id str i } in
               let p = snd e.game in
               print_player2 p curr_id;
               turn_start e
           | 3 ->
+              let t = multi_kittens e 3 in
+              let e = { e with game = t } in
               let e = { e with game = Deck.use_card t curr_id str i } in
               let p = snd e.game in
               print_player2 p curr_id;
@@ -225,17 +236,28 @@ and manage_spec_card (e : e) curr_id str prompt =
       print_player2 p curr_id;
       turn_start e
 
-and multi_kittens (num : int) =
+(*[multi_kittens] takes care of the behavior for using 2,3, and 5
+  kittens. *)
+and multi_kittens e (num : int) =
   match num with
   | 2 ->
       let msg =
         "Which player number would like to steal a random card from?"
       in
-      print_endline msg;
-      print_string "> "
-  | 3 -> failwith ""
-  | 5 -> failwith ""
-  | _ -> failwith "Invalid num"
+      let i = prompt_for_int_filter msg Deck.is_id e.game in
+      let curr_player = e.curr_id in
+      Deck.transfer_card_rand e.game curr_player i
+  | 3 ->
+      let msg =
+        "Which player number would like to steal a card from?"
+      in
+      let i = prompt_for_int_filter msg Deck.is_id e.game in
+      let curr_player = e.curr_id in
+      let msg = "What card would like to try to steal?" in
+      let name = prompt_for_name e.game msg in
+      Deck.transfer_card e.game curr_player i name
+  | 5 -> failwith "multi 5"
+  | _ -> failwith "multi_kittens"
 
 and prompt_for_int msg =
   print_endline msg;
@@ -248,6 +270,22 @@ and prompt_for_int msg =
       | None ->
           let msg = "Not a number. Please try again." in
           prompt_for_int msg)
+
+(* filter is a function that returns T/F based on input int *)
+and prompt_for_int_filter msg filter (t : t) =
+  let value = prompt_for_int msg in
+  if filter t value then value else prompt_for_int_filter msg filter t
+
+and prompt_for_name t msg : string =
+  print_endline msg;
+  print_string "> ";
+  match read_line () with
+  | exception End_of_file -> failwith "read_line failure"
+  | str ->
+      if Deck.is_card t str then str
+      else
+        let msg = "Not a valid card name. Please try again." in
+        prompt_for_name t msg
 
 (* let e = { e with game = Deck.use_card t curr_id str num } in (* let p
    = snd e.game in *) print_player2 p curr_id; turn_start e *)
