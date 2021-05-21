@@ -78,7 +78,7 @@ let play_game f =
              d.cards_info
           |> String.concat "\n");
         print_ai_hands (d, p);
-        print_endline "good to go";
+        (* print_endline "good to go"; *)
         (* prompt user for next move *)
         let t = (d, p) in
         let e1 = Move.engine_init t in

@@ -37,6 +37,7 @@ type d = {
   cards_used : card_id list;
   cards_left : card_id list;
   cards_info : card_rem list;
+  directory : card_id list;
 }
 
 type player_id = int
@@ -111,12 +112,13 @@ val change_state : t -> player_id -> st -> t
     non-bomb card. *)
 val draw_card : t -> player_id -> t
 
-(** [use_card t player_id card_name] let the player whose id is
+(** [rec use_card t player_id card_name num] lets the player whose id is
     [player_id] to use a card. The function puts the used card to
-    [cards_used] of the deck and does nothing else in particular. ** RI:
-    the player has the card. Should use
-    [player_have_card t player_id card_name] to guarantee this RI. *)
-val use_card : t -> player_id -> card_name -> t
+    [cards_used] of the deck and does nothing else in particular.
+    use_card repeats for the [num] times ** RI: the player has the card.
+    Should use [player_have_card t player_id card_name] to guarantee
+    this RI. *)
+val use_card : t -> player_id -> card_name -> int -> t
 
 (** [transfer_card t player_id1 player_id2 card_name] let player1 whose
     id is [player_id1] to transfer the card whose name is [card_name] to
@@ -145,3 +147,10 @@ val player_have_card : t -> player_id -> card_name -> bool
 val check_state : t -> player_id -> st
 
 val find_player : p -> player_id -> player
+
+(* [get_genre] takes in a card name and returns the genre for that card *)
+val get_genre : t -> string -> string
+
+val num_copies : t -> player_id -> string -> int
+
+val is_id : t -> player_id -> bool

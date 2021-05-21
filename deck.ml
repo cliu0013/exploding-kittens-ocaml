@@ -21,6 +21,7 @@ type d = {
   cards_used : card_id list;
   cards_left : card_id list;
   cards_info : card_rem list;
+  directory : card_id list;
 }
 
 type player_id = int
@@ -70,15 +71,21 @@ let get_one_card_info c =
 let get_cards_info json =
   json |> member "cards" |> to_list |> List.map get_one_card_info
 
+let make_directory2 (lst : card_rem list) : card_id list =
+  let m c = { name = c.name; genre = c.genre } in
+  List.map m lst
+
 (* from_json *)
 let from_json json =
   let cards_info = json |> get_cards_info in
   let cards_left = cards_info |> get_rems_start [] in
+  let directory = make_directory2 cards_info in
   let d_of_json j =
     {
       cards_used : card_id list = [];
       cards_left : card_id list;
       cards_info : card_rem list;
+      directory : card_id list;
     }
   in
   d_of_json json
@@ -278,18 +285,23 @@ let rec remove acc (hand : card_id list) name =
         let acc = h :: acc in
         remove acc rest name
 
-let use_card t player_id name =
+let rec use_card t player_id name (num : int) =
   let d = fst t in
   let p = snd t in
   let player = find_player p player_id in
   let hand = player.hand in
+  (* let count = ref num in *)
+  (* let use_card_helper = *)
   if have_card hand name then
     let card = get_card hand name in
     let player = { player with hand = remove [] player.hand name } in
     let d = { d with cards_used = card :: d.cards_used } in
     let p = mutate_p p player player_id in
-    (d, p)
+    if num > 0 then use_card t player_id name (num - 1) else (d, p)
   else t
+
+(* in *)
+(* while !count > 0 do use_card_helper done *)
 
 let transfer_card t player_id1 player_id2 name =
   let d = fst t in
@@ -332,3 +344,38 @@ let check_state t player_id : st =
   let p = snd t in
   let player = find_player p player_id in
   player.state
+
+(* returns the number of copies of the named card in the given hand*)
+let num_copies (t : t) player_id name : int =
+  (* let d = fst t in *)
+  let p = snd t in
+  let player = find_player p player_id in
+  let hand = player.hand in
+  (* let count = ref 0 in *)
+  (* let count = ref num in *)
+  (* let use_card_helper = *)
+  let f (ele : card_id) = ele.name = name in
+  List.filter f hand |> List.length
+
+let get_genre (t : t) (name : string) : string =
+  (* let f (ele : card_id) = ele.name = name in let filted_list = json
+     |> member "cards" |> to_list |> List.map in *)
+  let d = fst t in
+  let directory = d.directory in
+  let f (ele : card_id) = ele.name = name in
+  let spec_card = List.filter f directory |> List.hd in
+  spec_card.genre
+
+let get_one_card_rem c =
+  {
+    name = c |> member "name" |> to_string;
+    genre = c |> member "genre" |> to_string;
+  }
+
+let make_directory json =
+  json |> member "cards" |> to_list |> List.map get_one_card_rem
+
+let is_id t player_id : bool =
+  let p = snd t in
+  let f (ele : player) = ele.id = player_id in
+  List.filter f p.ai |> List.length > 0
