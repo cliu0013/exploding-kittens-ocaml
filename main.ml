@@ -93,12 +93,16 @@ let play_game f =
 (** [main ()] prompts for the game to play, then starts it. *)
 
 let main () =
-  (* ANSITerminal.print_string [ ANSITerminal.blue ] "\n\nWelcome to the
-     original Exploding Kittens Kit.\n"; print_endline "Please enter the
-     name of the game file you want to load\n"; print_string "> "; match
-     read_line () with | exception End_of_file -> () | file_name ->
-     play_game file_name *)
-  play_game "original.json"
+  ANSITerminal.print_string [ ANSITerminal.blue ]
+    "\n\nWelcome to the\n     original Exploding Kittens Kit.\n";
+  print_endline
+    "Please enter the\n     name of the game file you want to load\n";
+  print_string "> ";
+  match read_line () with
+  | exception End_of_file -> ()
+  | file_name -> play_game file_name
+
+(* play_game "original.json" *)
 
 (* Execute the game engine. *)
 let () = main ()

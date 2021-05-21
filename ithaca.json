@@ -1,0 +1,69 @@
+{
+    "cards": [
+      {
+        "genre": "kittens", 
+        "name": "Cattermelon",
+        "number": 4000
+      },
+      {
+        "genre": "kittens", 
+        "name": "Hairy Potato Cat",
+        "number": 4000
+      },
+      {
+        "genre": "kittens", 
+        "name": "Tacocat",
+        "number": 4000
+      },
+      {
+        "genre": "kittens", 
+        "name": "Beard Cat",
+        "number": 4000
+      },
+      {
+        "genre": "kittens", 
+        "name": "Rainbow-Ralphing Cat",
+        "number": 4000
+      },
+      {
+        "genre": "functionals",
+        "name": "Nope",
+        "number": 5000
+      },
+      {
+        "genre": "functionals",
+        "name": "See The Future",
+        "number": 5000
+      },
+      {
+        "genre": "functionals",
+        "name": "Attack",
+        "number": 4000
+      },
+      {
+        "genre": "functionals",
+        "name": "Skip",
+        "number": 4000
+      },
+      {
+        "genre": "functionals",
+        "name": "Favor",
+        "number": 4000
+      },
+      {
+        "genre": "functionals",
+        "name": "Shuffle",
+        "number": 4000
+      },
+      {
+        "genre": "defuse",
+        "name": "Defuse",
+        "number": 6000
+      },
+      {
+        "genre": "bomb",
+        "name": "Exploding Kitten",
+        "number": 4000
+      }
+    ]
+  }
