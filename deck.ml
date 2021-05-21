@@ -3,6 +3,7 @@ type st =
   | SAFE
   | ATTACKED
   | DEAD
+  | SKIPPED
 
 type card_name = string
 
@@ -315,21 +316,22 @@ let transfer_card t player_id1 player_id2 name =
     let player2 = { player1 with hand = card :: player2.hand } in
     let p = mutate_p p player1 player1.id in
     let p = mutate_p p player2 player2.id in
-    (d, p)
-  else t
+    ((d, p), true)
+  else (t, false)
 
 (* returns a random card name from the gievn player's hand *)
 let random_card (t : t) (player_id : int) : string =
   let player = find_player (snd t) player_id in
   let hand = player.hand in
-  let max = hand |> List.length in
+  let max = (hand |> List.length) - 1 in
   let card = List.nth hand (Random.int max) in
   card.name
 
 let transfer_card_rand t player_id1 player_id2 =
   (* get a random card name from p1 *)
   let name = random_card t player_id1 in
-  transfer_card t player_id1 player_id2 name
+  let t, passed = transfer_card t player_id1 player_id2 name in
+  t
 
 let take_card t player_id name =
   let d = fst t in

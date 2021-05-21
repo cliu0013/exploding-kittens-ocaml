@@ -10,6 +10,7 @@ type st =
   | SAFE
   | ATTACKED
   | DEAD
+  | SKIPPED
 
 type card_name = string
 
@@ -125,7 +126,7 @@ val use_card : t -> player_id -> card_name -> int -> t
     player2 whose id is [player_id2]. ** RI: player1 has the card.
     Should use [player_have_card t player_id1 card_name] to guarantee
     this RI. *)
-val transfer_card : t -> player_id -> player_id -> card_name -> t
+val transfer_card : t -> player_id -> player_id -> card_name -> t * bool
 
 (** [transfer_card_rand t player_id1 player_id2 card_name] is the same
     as the non-rand version, except that a random card is transferred
@@ -164,5 +165,5 @@ val is_id : t -> player_id -> bool
 (* [is_card] returns T/F based on if [name] is a valid card name *)
 val is_card : t -> string -> bool
 
-(* [is_kitten] returns true iff the card is one of the kittens *)
-val is_kitten : t -> string -> bool
+(* (* [is_kitten] returns true iff the card is one of the kittens *) val
+   is_kitten : t -> string -> bool *)
