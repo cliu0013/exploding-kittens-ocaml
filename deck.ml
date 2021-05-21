@@ -331,7 +331,7 @@ let transfer_card_rand t player_id1 player_id2 =
   (* get a random card name from p1 *)
   let name = random_card t player_id1 in
   let t, passed = transfer_card t player_id1 player_id2 name in
-  t
+  (t, name)
 
 let take_card t player_id name =
   let d = fst t in

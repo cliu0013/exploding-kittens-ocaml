@@ -128,11 +128,6 @@ val use_card : t -> player_id -> card_name -> int -> t
     this RI. *)
 val transfer_card : t -> player_id -> player_id -> card_name -> t * bool
 
-(** [transfer_card_rand t player_id1 player_id2 card_name] is the same
-    as the non-rand version, except that a random card is transferred
-    rather than a specified card*)
-val transfer_card_rand : t -> player_id -> player_id -> t
-
 (** [take_card t player_id card_name] let player whose id is [player_id]
     to take a card from the used cards of the deck. ** RI: the used
     cards in the deck has the card. Should use
@@ -171,6 +166,11 @@ val is_card : t -> string -> bool
 val peek : t -> int -> card_id list
 
 val peek_print : t -> int -> unit
+
+(** [transfer_card_rand t player_id1 player_id2 card_name] is the same
+    as the non-rand version, except that a random card is transferred
+    rather than a specified card*)
+val transfer_card_rand : t -> player_id -> player_id -> t * string
 
 (* (* [is_kitten] returns true iff the card is one of the kittens *) val
    is_kitten : t -> string -> bool *)

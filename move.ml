@@ -279,7 +279,6 @@ and manage_spec_card (e : e) curr_id str prompt =
           print_player2 p curr_id;
           turn_start e
       | "Attack" ->
-          (* immediately end turn *)
           let msg =
             "Attacked player " ^ (e.next_id |> string_of_int) ^ "!"
           in
@@ -288,8 +287,18 @@ and manage_spec_card (e : e) curr_id str prompt =
           let t = Deck.change_state e.game e.next_id ATTACKED in
           (* set user's state to SAFE (as per rules) *)
           let t = Deck.change_state t e.curr_id SAFE in
+          (* immediately end turn *)
+          let next_curr = (e.curr_id + 1) mod e.num_players in
+          let next_next = (e.next_id + 1) mod e.num_players in
           let e = { e with game = t } in
-          let e = { e with game = Deck.use_card t curr_id str 1 } in
+          let e =
+            {
+              e with
+              game = Deck.use_card t curr_id str 1;
+              curr_id = next_curr;
+              next_id = next_next;
+            }
+          in
           let p = snd e.game in
           print_player2 p curr_id;
           turn_start e
@@ -314,6 +323,20 @@ and manage_spec_card (e : e) curr_id str prompt =
           let p = snd e.game in
           print_player2 p curr_id;
           turn_start e
+      | "Favor" ->
+          let msg =
+            "Which player number would like to steal a random card \
+             from?"
+          in
+          let i = prompt_for_int_filter msg Deck.is_id e.game in
+          let curr_player = e.curr_id in
+          let t, name = Deck.transfer_card_rand e.game curr_player i in
+          print_endline ("You got a " ^ name ^ "!");
+          let e = { e with game = t } in
+          let e = { e with game = Deck.use_card t curr_id str 1 } in
+          let p = snd e.game in
+          print_player2 p curr_id;
+          turn_start e
       | _ ->
           let e = { e with game = Deck.use_card t curr_id str 1 } in
           let p = snd e.game in
@@ -330,7 +353,9 @@ and multi_kittens e (num : int) =
       in
       let i = prompt_for_int_filter msg Deck.is_id e.game in
       let curr_player = e.curr_id in
-      Deck.transfer_card_rand e.game curr_player i
+      let t, name = Deck.transfer_card_rand e.game curr_player i in
+      print_endline ("You got a " ^ name ^ "!");
+      t
   | 3 ->
       let msg =
         "Which player number would like to steal a card from?"
@@ -368,7 +393,11 @@ and prompt_for_int msg =
 (* filter is a function that returns T/F based on input int *)
 and prompt_for_int_filter msg filter (t : t) =
   let value = prompt_for_int msg in
-  if filter t value then value else prompt_for_int_filter msg filter t
+  (* TODO: factor our the "value != 0" into a bigger filter fxn in
+     [multi_kittens 3]*)
+  let is_human = value != 0 in
+  if filter t value && is_human then value
+  else prompt_for_int_filter msg filter t
 
 and prompt_for_name t msg : string =
   print_endline msg;
