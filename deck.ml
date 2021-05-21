@@ -399,3 +399,26 @@ let is_card (t : t) (name : string) : bool =
   let directory = (fst t).directory in
   let f (ele : card_id) = ele.name = name in
   List.exists f directory
+
+let peek (t : t) (num : int) : card_id list =
+  let d = fst t in
+  let pile = d.cards_left in
+  let temp = ref [] in
+  let count = ref num in
+  while !count > 0 do
+    temp := !temp @ [ List.nth pile (num - !count) ];
+    count := !count - 1
+  done;
+  !temp
+
+let peek_print t num : unit =
+  let d = fst t in
+  let pile = d.cards_left in
+  (* let temp = ref [] in *)
+  let count = ref num in
+  while !count > 0 do
+    (* temp := !temp @ [ List.nth pile (num - !count) ]; *)
+    let card = List.nth pile (num - !count) in
+    print_endline card.name;
+    count := !count - 1
+  done

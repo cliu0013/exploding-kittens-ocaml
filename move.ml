@@ -293,9 +293,27 @@ and manage_spec_card (e : e) curr_id str prompt =
           let p = snd e.game in
           print_player2 p curr_id;
           turn_start e
-      (* set next player's state to attacked *)
-      (* if attacked, take another turn -- no need to mess with turn
-         order*)
+      | "See The Future" ->
+          (* let top3 = Deck.peek e.game 3 in let count = ref 3 in while
+             !count > 0 do let card = List.nth top3 !count in
+             print_endline card.name; count := !count - 1 done; *)
+          Deck.peek_print e.game 3;
+          let e = { e with game = Deck.use_card t curr_id str 1 } in
+          let p = snd e.game in
+          print_player2 p curr_id;
+          turn_start e
+      | "Shuffle" ->
+          (* shuffle the deck and update the engine with shuffled deck *)
+          let pile = (fst e.game).cards_left in
+          let pile = shuffle pile in
+          let d = { (fst e.game) with cards_left = pile } in
+          let t = (d, snd e.game) in
+          let e = { e with game = t } in
+          (* use the card *)
+          let e = { e with game = Deck.use_card t curr_id str 1 } in
+          let p = snd e.game in
+          print_player2 p curr_id;
+          turn_start e
       | _ ->
           let e = { e with game = Deck.use_card t curr_id str 1 } in
           let p = snd e.game in
@@ -362,6 +380,13 @@ and prompt_for_name t msg : string =
       else
         let msg = "Not a valid card name. Please try again." in
         prompt_for_name t msg
+
+(*from github:
+  https://stackoverflow.com/questions/15095541/how-to-shuffle-list-in-on-in-ocaml *)
+and shuffle d =
+  let nd = List.map (fun c -> (Random.bits (), c)) d in
+  let sond = List.sort compare nd in
+  List.map snd sond
 
 (* let e = { e with game = Deck.use_card t curr_id str num } in (* let p
    = snd e.game in *) print_player2 p curr_id; turn_start e *)

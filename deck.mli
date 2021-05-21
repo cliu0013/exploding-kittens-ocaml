@@ -157,6 +157,8 @@ val find_player : p -> player_id -> player
 (* [get_genre] takes in a card name and returns the genre for that card *)
 val get_genre : t -> string -> string
 
+(* [num_copies] returns the number of copies of the specified card in
+   player's hand *)
 val num_copies : t -> player_id -> string -> int
 
 (* [is_id] returns a T/F for if the provided player_id actually exists *)
@@ -164,6 +166,11 @@ val is_id : t -> player_id -> bool
 
 (* [is_card] returns T/F based on if [name] is a valid card name *)
 val is_card : t -> string -> bool
+
+(* [peek t num] returns the top [num] cards in the provided deck *)
+val peek : t -> int -> card_id list
+
+val peek_print : t -> int -> unit
 
 (* (* [is_kitten] returns true iff the card is one of the kittens *) val
    is_kitten : t -> string -> bool *)
