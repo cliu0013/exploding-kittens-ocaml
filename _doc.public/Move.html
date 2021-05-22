@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="previous" href="Deck.html">
+<link rel="next" href="Main.html">
+<link rel="Up" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Author" rel="Chapter" href="Author.html">
+<link title="Deck" rel="Chapter" href="Deck.html">
+<link title="Move" rel="Chapter" href="Move.html">
+<link title="Main" rel="Chapter" href="Main.html"><title>Move</title>
+</head>
+<body>
+<div class="navbar"><a class="pre" href="Deck.html" title="Deck">Previous</a>
+&nbsp;<a class="up" href="index.html" title="Index">Up</a>
+&nbsp;<a class="post" href="Main.html" title="Main">Next</a>
+</div>
+<h1>Module <a href="type_Move.html">Move</a></h1>
+
+<pre><span id="MODULEMove"><span class="keyword">module</span> Move</span>: <code class="code">sig</code> <a href="Move.html">..</a> <code class="code">end</code></pre><hr width="100%">
+<p>Represents the actions that player can make on their turn.</p>
+
+<pre><code><span id="TYPEgame_state"><span class="keyword">type</span> <code class="type"></code>game_state</span> = </code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTgame_state.WIN"><span class="constructor">WIN</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTgame_state.LOSS"><span class="constructor">LOSS</span></span></code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTgame_state.CONTINUE"><span class="constructor">CONTINUE</span></span></code></td>
+
+</tr></table>
+
+
+
+<pre><code><span id="TYPEe"><span class="keyword">type</span> <code class="type"></code>e</span> = {</code></pre><table class="typetable">
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTe.curr_id">curr_id</span>&nbsp;: <code class="type"><a href="Deck.html#TYPEplayer_id">Deck.player_id</a></code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTe.next_id">next_id</span>&nbsp;: <code class="type"><a href="Deck.html#TYPEplayer_id">Deck.player_id</a></code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTe.num_alive">num_alive</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTe.num_players">num_players</span>&nbsp;: <code class="type">int</code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTe.game">game</span>&nbsp;: <code class="type"><a href="Deck.html#TYPEt">Deck.t</a></code>;</code></td>
+
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code>&nbsp;&nbsp;</code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTe.game_st">game_st</span>&nbsp;: <code class="type"><a href="Move.html#TYPEgame_state">game_state</a></code>;</code></td>
+
+</tr></table>
+<code>}</code>
+
+
+
+<pre><span id="VALengine_init"><span class="keyword">val</span> engine_init</span> : <code class="type"><a href="Deck.html#TYPEt">Deck.t</a> -> <a href="Move.html#TYPEe">e</a></code></pre>
+<pre><span id="VALturn_start"><span class="keyword">val</span> turn_start</span> : <code class="type"><a href="Move.html#TYPEe">e</a> -> <a href="Move.html#TYPEe">e</a></code></pre></body></html>

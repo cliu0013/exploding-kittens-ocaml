@@ -1,4 +1,10 @@
 (** [play_game f] starts the adventure in file [f]. *)
+let compare_name (a : Deck.card_id) (b : Deck.card_id) : int =
+  match a.name > b.name with true -> 1 | false -> 0
+
+let compare_rem (a : Deck.card_rem) (b : Deck.card_rem) : int =
+  match a.name > b.name with true -> 1 | false -> 0
+
 let print_ai_hands (t : Deck.t) =
   let p = snd t in
   let ai = p.ai in
@@ -12,7 +18,7 @@ let print_ai_hands (t : Deck.t) =
         print_endline
           (List.map
              (fun (ele : Deck.card_id) -> ele.name ^ ": " ^ ele.genre)
-             h.hand
+             (h.hand |> List.sort compare_name)
           |> String.concat "\n");
         print_one_ai rest
   in
@@ -45,7 +51,7 @@ let play_game f =
           (List.map
              (fun (h : Deck.card_rem) ->
                h.name ^ ", " ^ h.genre ^ ": " ^ string_of_int h.copies)
-             d.cards_info
+             (d.cards_info |> List.sort compare_rem)
           |> String.concat "\n");
         print_endline
           ("Total number of cards: " ^ string_of_int (Deck.num_cards d));
@@ -59,7 +65,7 @@ let play_game f =
         print_endline
           (List.map
              (fun (h : Deck.card_id) -> h.name ^ ": " ^ h.genre)
-             p.user.hand
+             (p.user.hand |> List.sort compare_name)
           |> String.concat "\n");
         print_endline "";
         print_endline
@@ -75,7 +81,7 @@ let play_game f =
           (List.map
              (fun (h : Deck.card_rem) ->
                h.name ^ ", " ^ h.genre ^ ": " ^ string_of_int h.copies)
-             d.cards_info
+             (d.cards_info |> List.sort compare_rem)
           |> String.concat "\n");
         print_ai_hands (d, p);
         (* print_endline "good to go"; *)
@@ -93,14 +99,12 @@ let play_game f =
 (** [main ()] prompts for the game to play, then starts it. *)
 
 let main () =
-  ANSITerminal.print_string [ ANSITerminal.blue ]
-    "\n\nWelcome to the\n     original Exploding Kittens Kit.\n";
-  print_endline
-    "Please enter the\n     name of the game file you want to load\n";
-  print_string "> ";
-  match read_line () with
-  | exception End_of_file -> ()
-  | file_name -> play_game file_name
+  (* ANSITerminal.print_string [ ANSITerminal.blue ] "\n\nWelcome to
+     the\n original Exploding Kittens Kit.\n"; print_endline "Please
+     enter the\n name of the game file you want to load\n"; print_string
+     "> "; match read_line () with | exception End_of_file -> () |
+     file_name -> play_game file_name *)
+  play_game "original.json"
 
 (* play_game "original.json" *)
 

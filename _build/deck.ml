@@ -251,7 +251,7 @@ let mutate_p p player player_id =
     let f ele = if ele.id = player_id then player else ele in
     { p with ai = List.map f p.ai }
 
-let draw_card (t : t) player_id : t =
+let draw_card (t : t) player_id : t * string =
   let d = fst t in
   let p = snd t in
   let player = find_player p player_id in
@@ -264,8 +264,8 @@ let draw_card (t : t) player_id : t =
         let d = { d with cards_info = cards_rem } in
         let player = { player with hand = h :: hand } in
         let p = mutate_p p player player_id in
-        (d, p)
-      else change_state t player_id BOMBED
+        ((d, p), h.name) (* else change_state t player_id BOMBED *)
+      else ((d, p), h.name)
   | _ -> failwith "Not possible"
 
 let have_card hand name =
@@ -422,3 +422,5 @@ let peek_print t num : unit =
     print_endline card.name;
     count := !count - 1
   done
+
+let place_bomb t index : t = failwith ""

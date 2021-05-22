@@ -111,7 +111,7 @@ val change_state : t -> player_id -> st -> t
     [cards_left]. If the player tries to draw a bomb, they don't draw it
     but instead change their state to [BOMBED]; otherwise draw the
     non-bomb card. *)
-val draw_card : t -> player_id -> t
+val draw_card : t -> player_id -> t * string
 
 (** [rec use_card t player_id card_name num] lets the player whose id is
     [player_id] to use a card. The function puts the used card to
@@ -171,6 +171,9 @@ val peek_print : t -> int -> unit
     as the non-rand version, except that a random card is transferred
     rather than a specified card*)
 val transfer_card_rand : t -> player_id -> player_id -> t * string
+
+(** [place_bomb t i] places a bomb at index i on the deck*)
+val place_bomb : t -> int -> t
 
 (* (* [is_kitten] returns true iff the card is one of the kittens *) val
    is_kitten : t -> string -> bool *)
