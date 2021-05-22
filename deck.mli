@@ -11,6 +11,7 @@ type st =
   | ATTACKED
   | DEAD
   | SKIPPED
+  | ATTACKER
 
 type card_name = string
 
@@ -159,12 +160,18 @@ val num_copies : t -> player_id -> string -> int
 (* [is_id] returns a T/F for if the provided player_id actually exists *)
 val is_id : t -> player_id -> bool
 
+(* [is_ai] returns a T/F for if the provided id actually exists and is
+   an AI player*)
+val is_ai : t -> player_id -> bool
+
 (* [is_card] returns T/F based on if [name] is a valid card name *)
 val is_card : t -> string -> bool
 
 (* [peek t num] returns the top [num] cards in the provided deck *)
 val peek : t -> int -> card_id list
 
+(* [peek_print t num] prints to the command line the top [num] cards in
+   the provided deck *)
 val peek_print : t -> int -> unit
 
 (** [transfer_card_rand t player_id1 player_id2 card_name] is the same
@@ -172,7 +179,9 @@ val peek_print : t -> int -> unit
     rather than a specified card*)
 val transfer_card_rand : t -> player_id -> player_id -> t * string
 
-(** [place_bomb t i] places a bomb at index i on the deck*)
+(** [place_bomb t i] places a bomb at index [i] on the deck. [i] must be
+    be 0 or greater. If [i] exceeds the length of the deck, the bomb is
+    placed at the bottom.*)
 val place_bomb : t -> int -> t
 
 (* (* [is_kitten] returns true iff the card is one of the kittens *) val

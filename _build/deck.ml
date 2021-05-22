@@ -4,6 +4,7 @@ type st =
   | ATTACKED
   | DEAD
   | SKIPPED
+  | ATTACKER
 
 type card_name = string
 
@@ -259,13 +260,16 @@ let draw_card (t : t) player_id : t * string =
   match d.cards_left with
   | h :: rest ->
       if h.genre <> "bomb" then
+        (* update cards_rem, cards_left, and the player's hand *)
         let cards_rem = decrease_rem_info d.cards_info h.name in
         let d = { d with cards_left = rest } in
         let d = { d with cards_info = cards_rem } in
         let player = { player with hand = h :: hand } in
         let p = mutate_p p player player_id in
         ((d, p), h.name) (* else change_state t player_id BOMBED *)
-      else ((d, p), h.name)
+      else
+        (* don't update anything -- just return the exploding kitten *)
+        ((d, p), h.name)
   | _ -> failwith "Not possible"
 
 let have_card hand name =
@@ -395,6 +399,8 @@ let is_id t player_id : bool =
   let f (ele : player) = ele.id = player_id in
   List.filter f p.ai |> List.length > 0
 
+let is_ai t player_id : bool = player_id != 0 && is_id t player_id
+
 let is_card (t : t) (name : string) : bool =
   let directory = (fst t).directory in
   let f (ele : card_id) = ele.name = name in
@@ -423,4 +429,16 @@ let peek_print t num : unit =
     count := !count - 1
   done
 
-let place_bomb t index : t = failwith ""
+(* [insert_at x n lst] inserts [x] at index [n] of [lst]. If n > length
+   of list, x is placed at the list's tail *)
+let rec insert_at x n = function
+  | [] -> [ x ]
+  | h :: t as l -> if n = 0 then x :: l else h :: insert_at x (n - 1) t
+
+let place_bomb (t : t) index : t =
+  let d = fst t in
+  let bomb = List.hd d.cards_left in
+  let tail = List.tl d.cards_left in
+  let cards_left = insert_at bomb index tail in
+  let d = { d with cards_left } in
+  (d, snd t)
