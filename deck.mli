@@ -150,6 +150,8 @@ val player_have_card : t -> player_id -> card_name -> bool
     type st. *)
 val check_state : t -> player_id -> st
 
+(** [find_player] returns the actual player of the player type
+    corresponding to the unique player with the [player_id] specified. *)
 val find_player : p -> player_id -> player
 
 (** [get_genre] takes in a card name and returns the genre for that card *)

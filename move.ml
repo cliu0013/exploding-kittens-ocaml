@@ -35,6 +35,11 @@ let engine_init t =
 let compare_name (a : Deck.card_id) (b : Deck.card_id) : int =
   match a.name > b.name with true -> 1 | false -> 0
 
+(* (1/n probability returns true, (1-n)/n probability returns false) *)
+let dice n =
+  let outcome = Random.int n in
+  if outcome = 0 then true else false
+
 let print_player p id =
   if id = 0 then
     ANSITerminal.print_string [ ANSITerminal.green ]
@@ -235,6 +240,36 @@ and end_turn (e : e) (state : st) : e =
     let e = { e with curr_id = next_curr; next_id = next_next } in
     turn_start e
 
+and manage_ai e =
+  let curr_id = e.curr_id in
+  let curr_state = Deck.check_state e.game curr_id in
+  let next_curr =
+    if curr_state != ATTACKED then (e.curr_id + 1) mod e.num_players
+    else e.curr_id
+  in
+  let next_next =
+    if curr_state != ATTACKED then (e.next_id + 1) mod e.num_players
+    else e.next_id
+  in
+  let game =
+    (* Don't draw if AI is skipped *)
+    if curr_state = SKIPPED then Deck.change_state e.game e.curr_id SAFE
+    else
+      (* draw and set state to SAFE *)
+      let temp, name = Deck.draw_card e.game curr_id in
+      if debug then
+        print_endline
+          ("Player " ^ (e.curr_id |> string_of_int) ^ " drew: " ^ name)
+      else
+        print_endline
+          ("Player " ^ (e.curr_id |> string_of_int) ^ " drew a card.");
+      Deck.change_state temp e.curr_id SAFE
+  in
+  let e = { e with game; curr_id = next_curr; next_id = next_next } in
+  let p = snd e.game in
+  if debug then print_player p curr_id;
+  turn_start e
+
 and prompt_user e msg =
   let curr_state = Deck.check_state e.game e.curr_id in
   (* prompt user to enter a card name *)
@@ -276,36 +311,6 @@ and prompt_user e msg =
            type 'Pass' to pass your turn.\n"
         in
         prompt_user e msg
-
-and manage_ai e =
-  let curr_id = e.curr_id in
-  let curr_state = Deck.check_state e.game curr_id in
-  let next_curr =
-    if curr_state != ATTACKED then (e.curr_id + 1) mod e.num_players
-    else e.curr_id
-  in
-  let next_next =
-    if curr_state != ATTACKED then (e.next_id + 1) mod e.num_players
-    else e.next_id
-  in
-  let game =
-    (* Don't draw if AI is skipped *)
-    if curr_state = SKIPPED then Deck.change_state e.game e.curr_id SAFE
-    else
-      (* draw and set state to SAFE *)
-      let temp, name = Deck.draw_card e.game curr_id in
-      if debug then
-        print_endline
-          ("Player " ^ (e.curr_id |> string_of_int) ^ " drew: " ^ name)
-      else
-        print_endline
-          ("Player " ^ (e.curr_id |> string_of_int) ^ " drew a card.");
-      Deck.change_state temp e.curr_id SAFE
-  in
-  let e = { e with game; curr_id = next_curr; next_id = next_next } in
-  let p = snd e.game in
-  if debug then print_player p curr_id;
-  turn_start e
 
 and noped_append (e : e) (i : player_id) : e =
   let noped = e.noped @ [ i ] in
@@ -411,3 +416,92 @@ and use_future e : e =
     { e with game = Deck.use_card e.game e.curr_id "See The Future" 1 }
   in
   turn_start e
+
+and use_spec_card_ai (e : e) str =
+  let genre = Deck.get_genre e.game str in
+  match genre with
+  | "kittens" -> use_kittens_ai e str
+  | _ -> (
+      match str with
+      | "Skip" -> end_turn e SKIPPED
+      | "Shuffle" -> use_shuffle e
+      | "Favor" -> prompt_favor e
+      | _ -> failwith "AI not supported")
+
+and use_kittens_ai e str =
+  let curr_id = e.curr_id in
+  let t = e.game in
+  let num_kittens = Deck.num_copies t curr_id str in
+  (* print_endline msg; print_string "> "; *)
+  let rec get_num_used msg =
+    let f t i = i <= num_kittens && i > 0 in
+    let i = prompt_for_int_filter msg f e.game in
+    match i with
+    | 1 ->
+        let msg =
+          "You really can't do anything with one kitten. Please try \
+           another card."
+        in
+        prompt_user e msg
+    | 2 ->
+        let t = handle_transfer e 2 in
+        let t = Deck.use_card t curr_id str 2 in
+        let e = { e with game = t } in
+        turn_start e
+    | 3 ->
+        let t = handle_transfer e 3 in
+        let t = Deck.use_card t curr_id str 3 in
+        let e = { e with game = t } in
+        turn_start e
+    | _ ->
+        let msg = "4 kittens don't do anything. Please try again." in
+        get_num_used msg
+  in
+  let msg =
+    "How many " ^ str ^ "s would you like to use? You have "
+    ^ (num_kittens |> string_of_int)
+    ^ "."
+  in
+  get_num_used msg
+
+and prompt_ai e msg =
+  let curr_state = Deck.check_state e.game e.curr_id in
+  (* prompt user to enter a card name *)
+  print_endline msg;
+  print_string "> ";
+  match read_line () with
+  | exception End_of_file -> failwith "read_line failure"
+  | str ->
+      if str = "Pass" then
+        if curr_state = ATTACKED then
+          (* ATTACKED -> SAFE & take another turn *)
+          let t = Deck.change_state e.game e.curr_id SAFE in
+          let e = { e with game = t } in
+          end_turn e ATTACKED
+        else (* move to next player *)
+          end_turn e SAFE
+      else if Deck.player_have_card e.game e.curr_id str then
+        (* if the card is actually usable*)
+        if List.mem e.curr_id e.noped then
+          (* fizzle if Noped *)
+          let e =
+            { e with game = Deck.use_card e.game e.curr_id str 1 }
+          in
+          let e = noped_remove e e.curr_id in
+          turn_start e
+        else (* allow if not Noped*)
+          use_spec_card e str
+      else if Deck.is_card e.game str then
+        (* if the card exists but the player doesn't own it *)
+        let msg =
+          "You don't have that card! Please check your spelling, or \
+           type 'Pass' to pass your turn.\n"
+        in
+        prompt_user e msg
+      else
+        (* if the card just isn't in the game *)
+        let msg =
+          "That card doesn't exist! Please check your spelling, or \
+           type 'Pass' to pass your turn.\n"
+        in
+        prompt_user e msg
