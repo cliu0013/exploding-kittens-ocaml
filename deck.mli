@@ -4,7 +4,9 @@
 (** AF: [st] the states for the players. [BOMBED] means the player just
     drew an exploding kitten. [SAFE] means the player is safe.
     [ATTACKED] means the player is attacked by the other player. [DEAD]
-    means the player is out of the game. *)
+    means the player is out of the game. [SKIPPED] means that the
+    player's move will be skipped. [ATTACKER] means that the player has
+    used the Attack card, and their turn will end immediately.*)
 type st =
   | BOMBED
   | SAFE
@@ -69,14 +71,14 @@ type t = d * p
     valid JSON representation for a deck of cards. *)
 val from_json : Yojson.Basic.t -> d
 
-(* [num_cards d] is the number of cards in [d.cards_left] *)
+(** [num_cards d] is the number of cards in [d.cards_left] *)
 val num_cards : d -> int
 
-(* [num_alive p] is the number of AI players with state not equal to
-   [DEAD] *)
+(** [num_alive p] is the number of AI players with state not equal to
+    [DEAD] *)
 val num_alive : p -> int
 
-(* [shuffle lst] shuffle the list [lst] *)
+(** [shuffle lst] shuffle the list [lst] *)
 val shuffle : card_id list -> card_id list
 
 (** [cards_start d k] is the initialized game. The rule of dealing the
@@ -144,34 +146,34 @@ val used_have_card : t -> card_name -> bool
     otherwise returns false. *)
 val player_have_card : t -> player_id -> card_name -> bool
 
-(* [check_state] returns the state of the given player. States are of
-   type st. *)
+(** [check_state] returns the state of the given player. States are of
+    type st. *)
 val check_state : t -> player_id -> st
 
 val find_player : p -> player_id -> player
 
-(* [get_genre] takes in a card name and returns the genre for that card *)
+(** [get_genre] takes in a card name and returns the genre for that card *)
 val get_genre : t -> string -> string
 
-(* [num_copies] returns the number of copies of the specified card in
-   player's hand *)
+(** [num_copies] returns the number of copies of the specified card in
+    player's hand *)
 val num_copies : t -> player_id -> string -> int
 
-(* [is_id] returns a T/F for if the provided player_id actually exists *)
+(** [is_id] returns a T/F for if the provided player_id actually exists *)
 val is_id : t -> player_id -> bool
 
-(* [is_ai] returns a T/F for if the provided id actually exists and is
-   an AI player*)
+(** [is_ai] returns a T/F for if the provided id actually exists and is
+    an AI player*)
 val is_ai : t -> player_id -> bool
 
-(* [is_card] returns T/F based on if [name] is a valid card name *)
+(** [is_card] returns T/F based on if [name] is a valid card name *)
 val is_card : t -> string -> bool
 
-(* [peek t num] returns the top [num] cards in the provided deck *)
+(** [peek t num] returns the top [num] cards in the provided deck *)
 val peek : t -> int -> card_id list
 
-(* [peek_print t num] prints to the command line the top [num] cards in
-   the provided deck *)
+(** [peek_print t num] prints to the command line the top [num] cards in
+    the provided deck *)
 val peek_print : t -> int -> unit
 
 (** [transfer_card_rand t player_id1 player_id2 card_name] is the same
@@ -184,5 +186,6 @@ val transfer_card_rand : t -> player_id -> player_id -> t * string
     placed at the bottom.*)
 val place_bomb : t -> int -> t
 
-(* (* [is_kitten] returns true iff the card is one of the kittens *) val
-   is_kitten : t -> string -> bool *)
+(** [hand_is_empty t player_id] returns whether or not the given, valid
+    [player_id]'s hand is empty. *)
+val hand_is_empty : t -> player_id -> bool
