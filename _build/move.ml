@@ -19,7 +19,6 @@ type e = {
   noped : player_id list;
 }
 
-(* [engine_init] initializes the engine for the game *)
 let engine_init t =
   {
     curr_id = 0;
@@ -36,8 +35,6 @@ let engine_init t =
 let compare_name (a : Deck.card_id) (b : Deck.card_id) : int =
   match a.name > b.name with true -> 1 | false -> 0
 
-(* [print_player] prints onto the command line the hand of the player
-   with the specified [id]. *)
 let print_player p id =
   if id = 0 then
     ANSITerminal.print_string [ ANSITerminal.green ]
@@ -57,8 +54,6 @@ let print_player p id =
       |> String.concat "\n");
     print_endline "")
 
-(* [turn_start] takes in an engine and returns an engine. Command line
-   prompts are made to ask the user what move to make.*)
 let rec turn_start e : e =
   let curr_id = e.curr_id in
   if curr_id <> 0 then manage_ai e
@@ -86,8 +81,6 @@ let rec turn_start e : e =
         (* end_turn e SKIPPED *)
     | DEAD -> failwith "DEAD unimplemented"
 
-(* [use_spec_card] handles the logic for any valid card that the user
-   wants to use. *)
 and use_spec_card (e : e) str =
   (* let d = fst t in let p = snd t in *)
   (* let num = ref 1 in *)
@@ -97,18 +90,15 @@ and use_spec_card (e : e) str =
   | _ -> (
       match str with
       | "Skip" -> end_turn e SKIPPED
-      | "Attack" -> use_attack e
+      | "Attack" -> prompt_attack e
       | "See The Future" -> use_future e
       | "Shuffle" -> use_shuffle e
-      | "Favor" -> use_favor e
-      | "Nope" -> use_nope e
+      | "Favor" -> prompt_favor e
+      | "Nope" -> prompt_nope e
       | "Defuse" ->
           prompt_user e "Can't use Defuse by itself! Try another card."
       | _ -> failwith "Invalid card name")
 
-(* [use_kittens] prompts the user for a valid number of kittens to use
-   and acts accordingly. 1/4: Nothing happens. 2/3: User gets to steal a
-   random/named card from a named player. *)
 and use_kittens e str =
   let curr_id = e.curr_id in
   let t = e.game in
@@ -145,8 +135,6 @@ and use_kittens e str =
   in
   get_num_used msg
 
-(*[handle_transfer] prompts to find the player that will be "stolen"
-  from & does the stealing. **helper function for [use_kittens] *)
 and handle_transfer e (num : int) =
   match num with
   | 2 ->
@@ -183,8 +171,6 @@ and handle_transfer e (num : int) =
      cards in their turn -- not implementing atm *)
   | _ -> failwith "handle_transfer"
 
-(* [prompt_for_int msg] outputs [msg] on the command line and checks
-   that the user's response is an integer *)
 and prompt_for_int msg =
   print_endline msg;
   print_string "> ";
@@ -197,9 +183,6 @@ and prompt_for_int msg =
           let msg = "Not a number. Please try again." in
           prompt_for_int msg)
 
-(* [prompt_for_int msg filter t] outputs [msg] on the command line and
-   checks that the user's response is an integer. It also checks if that
-   integer is a valid given a specificed [filter] and [t]*)
 and prompt_for_int_filter msg filter (t : t) =
   let value = prompt_for_int msg in
   if filter t value then value
@@ -218,8 +201,6 @@ and prompt_for_name t msg : string =
         let msg = "Not a valid card name. Please try again." in
         prompt_for_name t msg
 
-(* [end_turn e st] takes care of the card draw that ends the turn and
-   sets the player that goes next *)
 and end_turn (e : e) (state : st) : e =
   let incr =
     match state with
@@ -296,7 +277,6 @@ and prompt_user e msg =
         in
         prompt_user e msg
 
-(* [manage_ai] is the logic for ai players *)
 and manage_ai e =
   let curr_id = e.curr_id in
   let curr_state = Deck.check_state e.game curr_id in
@@ -327,7 +307,6 @@ and manage_ai e =
   if debug then print_player p curr_id;
   turn_start e
 
-(* [noped_append e i] adds player [i] to the noped list in [e] *)
 and noped_append (e : e) (i : player_id) : e =
   let noped = e.noped @ [ i ] in
   { e with noped }
@@ -365,9 +344,12 @@ and manage_bombed e =
       "\n********** Bombed! YOU LOSE. **********\n";
     e)
 
-and use_attack (e : e) : e =
+and prompt_attack (e : e) : e =
   let msg = "Attacked player " ^ (e.next_id |> string_of_int) ^ "!" in
   print_endline msg;
+  use_attack e
+
+and use_attack e =
   (* set next player's state to ATTACKED *)
   let t = Deck.change_state e.game e.next_id ATTACKED in
   (* set user's state to SAFE (as per rules) *)
@@ -386,31 +368,41 @@ and use_shuffle (e : e) : e =
   let e = { e with game = t } in
   turn_start e
 
-and use_nope (e : e) : e =
+and prompt_nope (e : e) : e =
   let msg = "Which player number would you like to 'Nope'?" in
   (* filter for if specified player is AI & not already Noped *)
   let f t i = Deck.is_ai t i && not (List.mem e.curr_id e.noped) in
   let i = prompt_for_int_filter msg f e.game in
+  use_nope e i
+
+and use_nope e i =
   let e = noped_append e i in
   let e = { e with game = Deck.use_card e.game e.curr_id "Nope" 1 } in
   turn_start e
 
-and use_favor e =
+and prompt_favor e =
   let rec handle_favor msg =
     (* True if id is a valid player_id AND it is for an AI player *)
     let i = prompt_for_int_filter msg Deck.is_ai e.game in
-    if not (Deck.hand_is_empty e.game i) then (
-      let t, name = Deck.transfer_card_rand e.game i e.curr_id in
-      print_endline ("You got: " ^ name ^ "!");
-      let t = Deck.use_card t e.curr_id "Favor" 1 in
-      let e = { e with game = t } in
-      turn_start e)
+    if not (Deck.hand_is_empty e.game i) then use_favor e i
     else
       handle_favor
         "That player's hand is empty. Please try another player."
   in
   handle_favor
     "Which player number would like to steal a random card from?"
+
+and use_favor e (giver : player_id) : e =
+  let taker = e.curr_id in
+  let t, name = Deck.transfer_card_rand e.game giver taker in
+  if taker = 0 then print_endline ("You got: " ^ name ^ "!")
+  else
+    print_endline
+      ("Player " ^ string_of_int taker ^ " got: " ^ name
+     ^ " from player " ^ string_of_int giver ^ " !");
+  let t = Deck.use_card t taker "Favor" 1 in
+  let e = { e with game = t } in
+  turn_start e
 
 and use_future e : e =
   print_endline "The top three cards on the deck are: ";
