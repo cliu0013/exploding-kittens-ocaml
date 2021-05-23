@@ -66,6 +66,13 @@
 <td align="left" valign="top" >
 <code><span id="TYPEELTst.SKIPPED"><span class="constructor">SKIPPED</span></span></code></td>
 
+</tr>
+<tr>
+<td align="left" valign="top" >
+<code><span class="keyword">|</span></code></td>
+<td align="left" valign="top" >
+<code><span id="TYPEELTst.ATTACKER"><span class="constructor">ATTACKER</span></span></code></td>
+
 </tr></table>
 
 <div class="info ">
@@ -73,7 +80,9 @@
 <p>AF: <code class="code">st</code> the states for the players. <code class="code">BOMBED</code> means the player just
     drew an exploding kitten. <code class="code">SAFE</code> means the player is safe.
     <code class="code">ATTACKED</code> means the player is attacked by the other player. <code class="code">DEAD</code>
-    means the player is out of the game.</p>
+    means the player is out of the game. <code class="code">SKIPPED</code> means that the
+    player's move will be skipped. <code class="code">ATTACKER</code> means that the player has
+    used the Attack card, and their turn will end immediately.</p>
 </div>
 </div>
 
@@ -254,9 +263,25 @@
 </div>
 </div>
 
-<pre><span id="VALnum_cards"><span class="keyword">val</span> num_cards</span> : <code class="type"><a href="Deck.html#TYPEd">d</a> -> int</code></pre>
-<pre><span id="VALnum_alive"><span class="keyword">val</span> num_alive</span> : <code class="type"><a href="Deck.html#TYPEp">p</a> -> int</code></pre>
-<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type"><a href="Deck.html#TYPEcard_id">card_id</a> list -> <a href="Deck.html#TYPEcard_id">card_id</a> list</code></pre>
+<pre><span id="VALnum_cards"><span class="keyword">val</span> num_cards</span> : <code class="type"><a href="Deck.html#TYPEd">d</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">num_cards d</code> is the number of cards in <code class="code">d.cards_left</code></p>
+</div>
+</div>
+
+<pre><span id="VALnum_alive"><span class="keyword">val</span> num_alive</span> : <code class="type"><a href="Deck.html#TYPEp">p</a> -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">num_alive p</code> is the number of AI players with state not equal to
+    <code class="code">DEAD</code></p>
+</div>
+</div>
+
+<pre><span id="VALshuffle"><span class="keyword">val</span> shuffle</span> : <code class="type"><a href="Deck.html#TYPEcard_id">card_id</a> list -> <a href="Deck.html#TYPEcard_id">card_id</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">shuffle lst</code> shuffle the list <code class="code">lst</code></p>
+</div>
+</div>
+
 <pre><span id="VALgame_start"><span class="keyword">val</span> game_start</span> : <code class="type"><a href="Deck.html#TYPEd">d</a> -> int -> <a href="Deck.html#TYPEt">t</a></code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">cards_start d k</code> is the initialized game. The rule of dealing the
@@ -303,7 +328,7 @@
 </div>
 </div>
 
-<pre><span id="VALdraw_card"><span class="keyword">val</span> draw_card</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> <a href="Deck.html#TYPEt">t</a></code></pre><div class="info ">
+<pre><span id="VALdraw_card"><span class="keyword">val</span> draw_card</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> <a href="Deck.html#TYPEt">t</a> * string</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">draw_card t player_id</code> let the player whose id is <code class="code">player_id</code> to
     draw a card. The player try to draw the head of the deck's
@@ -358,19 +383,79 @@
 </div>
 </div>
 
-<pre><span id="VALcheck_state"><span class="keyword">val</span> check_state</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> <a href="Deck.html#TYPEst">st</a></code></pre>
+<pre><span id="VALcheck_state"><span class="keyword">val</span> check_state</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> <a href="Deck.html#TYPEst">st</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">check_state</code> returns the state of the given player. States are of
+    type st.</p>
+</div>
+</div>
+
 <pre><span id="VALfind_player"><span class="keyword">val</span> find_player</span> : <code class="type"><a href="Deck.html#TYPEp">p</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> <a href="Deck.html#TYPEplayer">player</a></code></pre>
-<pre><span id="VALget_genre"><span class="keyword">val</span> get_genre</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> string -> string</code></pre>
-<pre><span id="VALnum_copies"><span class="keyword">val</span> num_copies</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> string -> int</code></pre>
-<pre><span id="VALis_id"><span class="keyword">val</span> is_id</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> bool</code></pre>
-<pre><span id="VALis_card"><span class="keyword">val</span> is_card</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> string -> bool</code></pre>
-<pre><span id="VALpeek"><span class="keyword">val</span> peek</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> int -> <a href="Deck.html#TYPEcard_id">card_id</a> list</code></pre>
-<pre><span id="VALpeek_print"><span class="keyword">val</span> peek_print</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> int -> unit</code></pre>
+<pre><span id="VALget_genre"><span class="keyword">val</span> get_genre</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> string -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">get_genre</code> takes in a card name and returns the genre for that card</p>
+</div>
+</div>
+
+<pre><span id="VALnum_copies"><span class="keyword">val</span> num_copies</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> string -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">num_copies</code> returns the number of copies of the specified card in
+    player's hand</p>
+</div>
+</div>
+
+<pre><span id="VALis_id"><span class="keyword">val</span> is_id</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_id</code> returns a T/F for if the provided player_id actually exists</p>
+</div>
+</div>
+
+<pre><span id="VALis_ai"><span class="keyword">val</span> is_ai</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_ai</code> returns a T/F for if the provided id actually exists and is
+    an AI player</p>
+</div>
+</div>
+
+<pre><span id="VALis_card"><span class="keyword">val</span> is_card</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> string -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">is_card</code> returns T/F based on if <code class="code">name</code> is a valid card name</p>
+</div>
+</div>
+
+<pre><span id="VALpeek"><span class="keyword">val</span> peek</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> int -> <a href="Deck.html#TYPEcard_id">card_id</a> list</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">peek t num</code> returns the top <code class="code">num</code> cards in the provided deck</p>
+</div>
+</div>
+
+<pre><span id="VALpeek_print"><span class="keyword">val</span> peek_print</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> int -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">peek_print t num</code> prints to the command line the top <code class="code">num</code> cards in
+    the provided deck</p>
+</div>
+</div>
+
 <pre><span id="VALtransfer_card_rand"><span class="keyword">val</span> transfer_card_rand</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> <a href="Deck.html#TYPEt">t</a> * string</code></pre><div class="info ">
 <div class="info-desc">
 <p><code class="code">transfer_card_rand t player_id1 player_id2 card_name</code> is the same
     as the non-rand version, except that a random card is transferred
     rather than a specified card</p>
+</div>
+</div>
+
+<pre><span id="VALplace_bomb"><span class="keyword">val</span> place_bomb</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> int -> <a href="Deck.html#TYPEt">t</a></code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">place_bomb t i</code> places a bomb at index <code class="code">i</code> on the deck. <code class="code">i</code> must be
+    be 0 or greater. If <code class="code">i</code> exceeds the length of the deck, the bomb is
+    placed at the bottom.</p>
+</div>
+</div>
+
+<pre><span id="VALhand_is_empty"><span class="keyword">val</span> hand_is_empty</span> : <code class="type"><a href="Deck.html#TYPEt">t</a> -> <a href="Deck.html#TYPEplayer_id">player_id</a> -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><code class="code">hand_is_empty t player_id</code> returns whether or not the given, valid
+    <code class="code">player_id</code>'s hand is empty.</p>
 </div>
 </div>
 </body></html>

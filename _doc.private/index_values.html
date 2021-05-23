@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="Start" href="index.html">
 <link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Author" rel="Chapter" href="Author.html">
@@ -51,8 +52,20 @@
 <tr><td><a href="Main.html#VALcheck_next">check_next</a> [<a href="Main.html">Main</a>]</td>
 <td></td></tr>
 <tr><td><a href="Deck.html#VALcheck_state">check_state</a> [<a href="Deck.html">Deck</a>]</td>
+<td><div class="info">
+<p><code class="code">check_state</code> returns the state of the given player.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Main.html#VALcompare_name">compare_name</a> [<a href="Main.html">Main</a>]</td>
+<td></td></tr>
+<tr><td><a href="Move.html#VALcompare_name">compare_name</a> [<a href="Move.html">Move</a>]</td>
+<td></td></tr>
+<tr><td><a href="Main.html#VALcompare_rem">compare_rem</a> [<a href="Main.html">Main</a>]</td>
 <td></td></tr>
 <tr><td align="left"><div>D</div></td></tr>
+<tr><td><a href="Move.html#VALdebug">debug</a> [<a href="Move.html">Move</a>]</td>
+<td></td></tr>
 <tr><td><a href="Deck.html#VALdecrease_rem_info">decrease_rem_info</a> [<a href="Deck.html">Deck</a>]</td>
 <td></td></tr>
 <tr><td><a href="Deck.html#VALdraw_card">draw_card</a> [<a href="Deck.html">Deck</a>]</td>
@@ -65,8 +78,19 @@
 <tr><td><a href="Deck.html#VALdraw_card_safe">draw_card_safe</a> [<a href="Deck.html">Deck</a>]</td>
 <td></td></tr>
 <tr><td align="left"><div>E</div></td></tr>
+<tr><td><a href="Move.html#VALend_turn">end_turn</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">end_turn e st</code> takes care of the card draw that ends the turn and
+    sets the player that goes next</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Move.html#VALengine_init">engine_init</a> [<a href="Move.html">Move</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">engine_init</code> initializes the engine for the game</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>F</div></td></tr>
 <tr><td><a href="Deck.html#VALfind_player">find_player</a> [<a href="Deck.html">Deck</a>]</td>
 <td></td></tr>
@@ -96,7 +120,11 @@
 <tr><td><a href="Deck.html#VALget_defuse">get_defuse</a> [<a href="Deck.html">Deck</a>]</td>
 <td></td></tr>
 <tr><td><a href="Deck.html#VALget_genre">get_genre</a> [<a href="Deck.html">Deck</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">get_genre</code> takes in a card name and returns the genre for that card</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Deck.html#VALget_hand">get_hand</a> [<a href="Deck.html">Deck</a>]</td>
 <td><div class="info">
 <p><code class="code">get_hand t</code> is a list of all of cards that are in the hand of the
@@ -111,6 +139,21 @@
 <tr><td><a href="Deck.html#VALget_rems_start">get_rems_start</a> [<a href="Deck.html">Deck</a>]</td>
 <td></td></tr>
 <tr><td align="left"><div>H</div></td></tr>
+<tr><td><a href="Deck.html#VALhand_is_empty">hand_is_empty</a> [<a href="Deck.html">Deck</a>]</td>
+<td><div class="info">
+<p><code class="code">hand_is_empty t player_id</code> returns whether or not the given, valid
+    <code class="code">player_id</code>'s hand is empty.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Move.html#VALhandle_transfer">handle_transfer</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">handle_transfer e num</code> is a helper function for <code class="code">use_kittens</code> and
+    carries out whatever action is appropriate given the usage of <code class="code">num</code>
+    kittens.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Deck.html#VALhave_card">have_card</a> [<a href="Deck.html">Deck</a>]</td>
 <td></td></tr>
 <tr><td><a href="Author.html#VALhours_worked">hours_worked</a> [<a href="Author.html">Author</a>]</td>
@@ -120,10 +163,27 @@
 </div>
 </td></tr>
 <tr><td align="left"><div>I</div></td></tr>
+<tr><td><a href="Deck.html#VALinsert_at">insert_at</a> [<a href="Deck.html">Deck</a>]</td>
+<td></td></tr>
+<tr><td><a href="Deck.html#VALis_ai">is_ai</a> [<a href="Deck.html">Deck</a>]</td>
+<td><div class="info">
+<p><code class="code">is_ai</code> returns a T/F for if the provided id actually exists and is
+    an AI player</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Deck.html#VALis_card">is_card</a> [<a href="Deck.html">Deck</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">is_card</code> returns T/F based on if <code class="code">name</code> is a valid card name</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Deck.html#VALis_id">is_id</a> [<a href="Deck.html">Deck</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">is_id</code> returns a T/F for if the provided player_id actually exists</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>M</div></td></tr>
 <tr><td><a href="Main.html#VALmain">main</a> [<a href="Main.html">Main</a>]</td>
 <td></td></tr>
@@ -131,28 +191,75 @@
 <td></td></tr>
 <tr><td><a href="Deck.html#VALmake_directory2">make_directory2</a> [<a href="Deck.html">Deck</a>]</td>
 <td></td></tr>
-<tr><td><a href="Move.html#VALmanage_genre">manage_genre</a> [<a href="Move.html">Move</a>]</td>
-<td></td></tr>
-<tr><td><a href="Move.html#VALmanage_genre2">manage_genre2</a> [<a href="Move.html">Move</a>]</td>
-<td></td></tr>
-<tr><td><a href="Move.html#VALmanage_spec_card">manage_spec_card</a> [<a href="Move.html">Move</a>]</td>
-<td></td></tr>
-<tr><td><a href="Move.html#VALmulti_kittens">multi_kittens</a> [<a href="Move.html">Move</a>]</td>
-<td></td></tr>
+<tr><td><a href="Move.html#VALmanage_ai">manage_ai</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">manage_ai</code> is the logic for ai players</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Move.html#VALmanage_bombed">manage_bombed</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">manage_bombed</code> is called whenever a user draws a bomb.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Deck.html#VALmutate_p">mutate_p</a> [<a href="Deck.html">Deck</a>]</td>
 <td></td></tr>
 <tr><td align="left"><div>N</div></td></tr>
+<tr><td><a href="Move.html#VALnoped">noped</a> [<a href="Move.html">Move</a>]</td>
+<td></td></tr>
+<tr><td><a href="Move.html#VALnoped_append">noped_append</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">noped_append e i</code> adds player <code class="code">i</code> to the noped list in <code class="code">e</code></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Move.html#VALnoped_remove">noped_remove</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">noped_remove e i</code> removes player <code class="code">i</code> to the noped list in <code class="code">e</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Deck.html#VALnum_alive">num_alive</a> [<a href="Deck.html">Deck</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">num_alive p</code> is the number of AI players with state not equal to
+    <code class="code">DEAD</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Deck.html#VALnum_cards">num_cards</a> [<a href="Deck.html">Deck</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">num_cards d</code> is the number of cards in <code class="code">d.cards_left</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Deck.html#VALnum_copies">num_copies</a> [<a href="Deck.html">Deck</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">num_copies</code> returns the number of copies of the specified card in
+    player's hand</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>P</div></td></tr>
 <tr><td><a href="Deck.html#VALpeek">peek</a> [<a href="Deck.html">Deck</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">peek t num</code> returns the top <code class="code">num</code> cards in the provided deck</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Deck.html#VALpeek_print">peek_print</a> [<a href="Deck.html">Deck</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">peek_print t num</code> prints to the command line the top <code class="code">num</code> cards in
+    the provided deck</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Deck.html#VALplace_bomb">place_bomb</a> [<a href="Deck.html">Deck</a>]</td>
+<td><div class="info">
+<p><code class="code">place_bomb t i</code> places a bomb at index <code class="code">i</code> on the deck.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Main.html#VALplay_game">play_game</a> [<a href="Main.html">Main</a>]</td>
 <td></td></tr>
 <tr><td><a href="Deck.html#VALplayer_have_card">player_have_card</a> [<a href="Deck.html">Deck</a>]</td>
@@ -168,25 +275,51 @@
 <tr><td><a href="Main.html#VALprint_ai_hands">print_ai_hands</a> [<a href="Main.html">Main</a>]</td>
 <td></td></tr>
 <tr><td><a href="Move.html#VALprint_player">print_player</a> [<a href="Move.html">Move</a>]</td>
-<td></td></tr>
-<tr><td><a href="Move.html#VALprint_player2">print_player2</a> [<a href="Move.html">Move</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">print_player p id</code> prints the hand of player <code class="code">id</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Move.html#VALprompt_for_int">prompt_for_int</a> [<a href="Move.html">Move</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">prompt_for_int msg</code> outputs <code class="code">msg</code> on the command line and checks
+    that the user's response is an integer.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Move.html#VALprompt_for_int_filter">prompt_for_int_filter</a> [<a href="Move.html">Move</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">prompt_for_int msg filter t</code> outputs <code class="code">msg</code> on the command line and
+    checks that the user's response is an integer.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Move.html#VALprompt_for_name">prompt_for_name</a> [<a href="Move.html">Move</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">prompt_for_name t msg</code> outputs <code class="code">msg</code> on the command line and checks
+    that the response is an actual card in the given <code class="code">t</code>.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Move.html#VALprompt_user">prompt_user</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">prompt_user e msg</code> makes the command line prints and reads on the
+    user's inputs.</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>R</div></td></tr>
 <tr><td><a href="Deck.html#VALrandom_card">random_card</a> [<a href="Deck.html">Deck</a>]</td>
 <td></td></tr>
 <tr><td><a href="Deck.html#VALremove">remove</a> [<a href="Deck.html">Deck</a>]</td>
 <td></td></tr>
 <tr><td align="left"><div>S</div></td></tr>
-<tr><td><a href="Move.html#VALshuffle">shuffle</a> [<a href="Move.html">Move</a>]</td>
-<td></td></tr>
 <tr><td><a href="Deck.html#VALshuffle">shuffle</a> [<a href="Deck.html">Deck</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">shuffle lst</code> shuffle the list <code class="code">lst</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Deck.html#VALsort_palyers_hands">sort_palyers_hands</a> [<a href="Deck.html">Deck</a>]</td>
 <td></td></tr>
 <tr><td align="left"><div>T</div></td></tr>
@@ -214,12 +347,58 @@
 </div>
 </td></tr>
 <tr><td><a href="Move.html#VALturn_start">turn_start</a> [<a href="Move.html">Move</a>]</td>
-<td></td></tr>
+<td><div class="info">
+<p><code class="code">turn_start</code> handles the logic for what happens at the beginning of
+    a turn.</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>U</div></td></tr>
+<tr><td><a href="Move.html#VALuse_attack">use_attack</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">use_attack</code> uses the Attack card for the current player.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Deck.html#VALuse_card">use_card</a> [<a href="Deck.html">Deck</a>]</td>
 <td><div class="info">
 <p><code class="code">rec use_card t player_id card_name num</code> lets the player whose id is
     <code class="code">player_id</code> to use a card.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Move.html#VALuse_favor">use_favor</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">use_favor</code> uses the Favor card for the current player.The player is
+    prompted to provide a non-human player id to steal a random card
+    from and then steals from that player.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Move.html#VALuse_future">use_future</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">use_future</code> uses the Future card for the current player.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Move.html#VALuse_kittens">use_kittens</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">use_kittens e card_name</code> is called when a user uses a kitten, e.g.:
+    Tacocat.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Move.html#VALuse_nope">use_nope</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">use_nope</code> uses the Nope card for the current player.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Move.html#VALuse_shuffle">use_shuffle</a> [<a href="Move.html">Move</a>]</td>
+<td></td></tr>
+<tr><td><a href="Move.html#VALuse_spec_card">use_spec_card</a> [<a href="Move.html">Move</a>]</td>
+<td><div class="info">
+<p><code class="code">use_spec_card e card_name</code> uses the card specified by <code class="code">card_name</code></p>
 
 </div>
 </td></tr>

@@ -317,13 +317,17 @@ let transfer_card t player_id1 player_id2 name =
   if have_card hand1 name then
     let card = get_card hand1 name in
     let player1 = { player1 with hand = remove [] player1.hand name } in
-    let player2 = { player1 with hand = card :: player2.hand } in
+    let player2 = { player2 with hand = card :: player2.hand } in
     let p = mutate_p p player1 player1.id in
     let p = mutate_p p player2 player2.id in
     ((d, p), true)
   else (t, false)
 
-(* returns a random card name from the gievn player's hand *)
+exception Str_exc of string
+
+exception Empty_hand
+
+(* returns a random card name from the given player's hand *)
 let random_card (t : t) (player_id : int) : string =
   let player = find_player (snd t) player_id in
   let hand = player.hand in
@@ -332,7 +336,6 @@ let random_card (t : t) (player_id : int) : string =
   card.name
 
 let transfer_card_rand t player_id1 player_id2 =
-  (* get a random card name from p1 *)
   let name = random_card t player_id1 in
   let t, passed = transfer_card t player_id1 player_id2 name in
   (t, name)
@@ -442,3 +445,12 @@ let place_bomb (t : t) index : t =
   let cards_left = insert_at bomb index tail in
   let d = { d with cards_left } in
   (d, snd t)
+
+let hand_is_empty t player_id : bool =
+  (* match is_id t player_id with | true -> let p = snd t in let f (ele
+     : player) = ele.id = player_id in let player = List.filter f p.ai
+     |> List.hd in player.hand = [] | false -> false *)
+  let p = snd t in
+  let f (ele : player) = ele.id = player_id in
+  let player = List.filter f p.ai |> List.hd in
+  player.hand = []
