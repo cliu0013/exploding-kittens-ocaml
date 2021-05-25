@@ -1,0 +1,29 @@
+### Starting build.
+# Target: test.ml.depends, tags: { package(ANSITerminal), package(ounit2), package(yojson), debug, extension:ml, file:test.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package ounit2 -package yojson -package ANSITerminal -modules test.ml > test.ml.depends
+# Target: deck.mli.depends, tags: { package(ANSITerminal), package(ounit2), package(yojson), debug, extension:mli, file:deck.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package ounit2 -package yojson -package ANSITerminal -modules deck.mli > deck.mli.depends
+# Target: move.mli.depends, tags: { package(ANSITerminal), package(ounit2), package(yojson), debug, extension:mli, file:move.mli, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package ounit2 -package yojson -package ANSITerminal -modules move.mli > move.mli.depends
+# Target: deck.cmi, tags: { package(ANSITerminal), package(ounit2), package(yojson), byte, compile, debug, extension:mli, file:deck.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package ounit2 -package yojson -package ANSITerminal -o deck.cmi deck.mli
+# Target: move.cmi, tags: { package(ANSITerminal), package(ounit2), package(yojson), byte, compile, debug, extension:mli, file:move.mli, interf, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package ounit2 -package yojson -package ANSITerminal -o move.cmi move.mli
+# Target: test.cmo, tags: { package(ANSITerminal), package(ounit2), package(yojson), byte, compile, debug, extension:cmo, extension:ml, file:test.cmo, file:test.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package ounit2 -package yojson -package ANSITerminal -o test.cmo test.ml
+# Target: deck.ml.depends, tags: { package(ANSITerminal), package(ounit2), package(yojson), debug, extension:ml, file:deck.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package ounit2 -package yojson -package ANSITerminal -modules deck.ml > deck.ml.depends
+# Target: move.ml.depends, tags: { package(ANSITerminal), package(ounit2), package(yojson), debug, extension:ml, file:move.ml, ocaml, ocamldep, quiet, traverse }
+ocamlfind ocamldep -package ounit2 -package yojson -package ANSITerminal -modules move.ml > move.ml.depends
+# Target: deck.cmo, tags: { package(ANSITerminal), package(ounit2), package(yojson), byte, compile, debug, extension:cmo, extension:ml, file:deck.cmo, file:deck.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package ounit2 -package yojson -package ANSITerminal -o deck.cmo deck.ml
+# Target: move.cmo, tags: { package(ANSITerminal), package(ounit2), package(yojson), byte, compile, debug, extension:cmo, extension:ml, file:move.cmo, file:move.ml, implem, ocaml, quiet, traverse }
+ocamlfind ocamlc -c -g -package ounit2 -package yojson -package ANSITerminal -o move.cmo move.ml
++ ocamlfind ocamlc -c -g -package ounit2 -package yojson -package ANSITerminal -o move.cmo move.ml
+File "move.ml", line 55, characters 40-50:
+55 |   if outcome <= ai_mercy then true else false make
+                                             ^^^^^^^^^^
+Error: The constructor false expects 0 argument(s),
+       but is applied here to 1 argument(s)
+Command exited with code 2.
+# Compilation unsuccessful.

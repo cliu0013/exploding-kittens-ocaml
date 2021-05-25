@@ -52,7 +52,7 @@ let dice_res n =
 (* mercy true, not mercy false *)
 let ai_mercy_dice n =
   let outcome = Random.int n in
-  if outcome <= ai_mercy then true else false
+  if outcome <= ai_mercy then true else false make
 
 let print_player p id =
   if id = 0 then
