@@ -248,6 +248,6 @@ let deck_tests =
     >:: fun _ -> assert_equal no_cards (fst (draw_card no_cards 0)) );
   ]
 
-let suite = "test suite" >::: List.flatten [ deck_tests; move_tests ]
+let suite = "test suite" >::: List.flatten [ deck_tests ]
 
 let _ = run_test_tt_main suite
