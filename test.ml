@@ -2,23 +2,28 @@ open OUnit2
 open Deck
 open Move
 
+(* Test Plan: The functions in the Deck module which are responsible for
+   representing a deck of cards for the game and a couple of basic
+   functions on a deck were automatically tested by OUnit as they do not
+   require manual user inputs in the terminal. The functions in the Move
+   and main modules which run the game and handle game events and player
+   interaction were tested manually as they require repeated manual user
+   inputs in the terminal. For OUnit testing, test cases which aimed to
+   test general functionality were developed with a black-box approach
+   while test cases addressing edge cases were developed with a
+   glass-box approach For manual testing, user inputs and the parameters
+   for the game were developed with a black-box approach while
+   randomization contained in CPU player moves for example helped find
+   edge cases. Because the rules of Exploding Kittens are well defined
+   and relatively straightforward, black-box testing based on mechanics
+   of the game has been an effective testing strategy for determining if
+   our game generally runs correctly. For edge cases and rare situations
+   in game, the randomized moves that CPU players during much of our
+   playtesting in addition to targeted glass-box testing allowed us to
+   discover and address most of the remaining edge cases. *)
+
 (** [pp_string s] pretty-prints string [s]. *)
 let pp_string s = "\"" ^ s ^ "\""
-
-(** [pp_list pp_elt lst] pretty-prints list [lst], using [pp_elt] to
-    pretty-print each element of [lst]. *)
-let pp_list pp_elt lst =
-  let pp_elts lst =
-    let rec loop n acc = function
-      | [] -> acc
-      | [ h ] -> acc ^ pp_elt h
-      | h1 :: (h2 :: t as t') ->
-          if n = 100 then acc ^ "..." (* stop printing long list *)
-          else loop (n + 1) (acc ^ pp_elt h1 ^ "; ") t'
-    in
-    loop 0 "" lst
-  in
-  "[" ^ pp_elts lst ^ "]"
 
 let original = from_json (Yojson.Basic.from_file "original.json")
 
@@ -32,8 +37,7 @@ let card3 : card_id = { name = "Tacocat"; genre = "kittens" }
 
 let safe_human_player = { hand = []; id = 0; state = SAFE }
 
-let safe_human_player_with_card =
-  { hand = [ card1 ]; id = 0; state = SAFE }
+let human_with_card = { hand = [ card1 ]; id = 0; state = SAFE }
 
 let attacked_human_player = { hand = []; id = 0; state = ATTACKED }
 
@@ -41,7 +45,7 @@ let bombed_player = { hand = []; id = 1; state = BOMBED }
 
 let safe_player = { hand = [ card1 ]; id = 2; state = SAFE }
 
-let safe_player_no_card = { hand = []; id = 2; state = SAFE }
+let safe_ai_nocard = { hand = []; id = 2; state = SAFE }
 
 let bombed_player2 = { hand = []; id = 2; state = BOMBED }
 
@@ -73,11 +77,8 @@ let no_ai_p = { ai = []; user = safe_human_player }
 
 let p3 =
   {
-    ai =
-      [
-        bombed_player; safe_player_no_card; attacked_player; dead_player;
-      ];
-    user = safe_human_player_with_card;
+    ai = [ bombed_player; safe_ai_nocard; attacked_player; dead_player ];
+    user = human_with_card;
   }
 
 let game1 = game_start original 1
