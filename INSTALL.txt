@@ -16,6 +16,8 @@ The modules for this game do not require outside libraries.
    type in that card's name, or type in [Pass] to end the turn and draw a card. 
    All inputs are case sensitive. Then hit [enter]. 
 
+   New prompts will be prompted for you to make the next decision.
+
    If your decide to draw a card but your mistyped the card name, a new prompt 
    would be popped to ask you input something new and reprint your hand.
    If you use a card in your hand, it will be no longer in your hand. 
@@ -24,11 +26,10 @@ The modules for this game do not require outside libraries.
 
    When it's your next turn, you will notice there is a new card in your hand 
    if you didn't draw a card. If you draw a bomb, you will be bombed and 
-   lose the game. You will draw a bomb sooner or later. 
-   We don't have the mechanism to let you win the game for this demo currently, 
-   sorry. 
+   if you have a Defuse card then you can defuse it and keep the game going. If
+   you don't have a Defuse, then you die and lose the game.
+   
+   If the AI players all die before you, you win the game!
 
 7. Enjoy :)
 
-** All printed command lines with "TEST ONLY" will be commented out 
-   for the final game. 
