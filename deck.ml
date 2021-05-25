@@ -101,7 +101,10 @@ let decrease_rem_info lst card_name =
 
 let rec get_defuse acc d player =
   match d.cards_left with
-  | [] -> failwith "not possible"
+  | [] ->
+      let d = { d with cards_left = [] } in
+      let d = { d with cards_info = [] } in
+      (d, player)
   | h :: rest ->
       if h.genre <> "defuse" then
         let d = { d with cards_left = rest } in
@@ -130,7 +133,10 @@ let rec draw_card_safe d player n =
           else
             let d = { d with cards_left = t @ [ h ] } in
             draw_card_safe d player n_l
-      | _ -> failwith "Not possible")
+      | _ ->
+          let d = { d with cards_left = [] } in
+          let d = { d with cards_info = [] } in
+          (d, player))
 
 (* shuffle
    (https://stackoverflow.com/questions/15095541/how-to-shuffle-list-in-on-in-ocaml) *)
@@ -270,7 +276,7 @@ let draw_card (t : t) player_id : t * string =
       else
         (* don't update anything -- just return the exploding kitten *)
         ((d, p), h.name)
-  | _ -> failwith "Not possible"
+  | _ -> ((d, p), "No cards to draw")
 
 let have_card hand name =
   List.mem name
@@ -353,9 +359,11 @@ let take_card t player_id name =
   else t
 
 let player_have_card t player_id card_name =
-  let p = snd t in
-  let player = find_player p player_id in
-  have_card player.hand card_name
+  try
+    let p = snd t in
+    let player = find_player p player_id in
+    have_card player.hand card_name
+  with Failure _ -> false
 
 let used_have_card t card_name =
   let d = fst t in
@@ -382,11 +390,13 @@ let num_copies (t : t) player_id name : int =
 let get_genre (t : t) (name : string) : string =
   (* let f (ele : card_id) = ele.name = name in let filted_list = json
      |> member "cards" |> to_list |> List.map in *)
-  let d = fst t in
-  let directory = d.directory in
-  let f (ele : card_id) = ele.name = name in
-  let spec_card = List.filter f directory |> List.hd in
-  spec_card.genre
+  try
+    let d = fst t in
+    let directory = d.directory in
+    let f (ele : card_id) = ele.name = name in
+    let spec_card = List.filter f directory |> List.hd in
+    spec_card.genre
+  with Failure _ -> "Cannot find card"
 
 let get_one_card_rem c =
   {
@@ -398,9 +408,11 @@ let make_directory json =
   json |> member "cards" |> to_list |> List.map get_one_card_rem
 
 let is_id t player_id : bool =
-  let p = snd t in
-  let f (ele : player) = ele.id = player_id in
-  List.filter f p.ai |> List.length > 0
+  if player_id = 0 then true
+  else
+    let p = snd t in
+    let f (ele : player) = ele.id = player_id in
+    List.filter f p.ai |> List.length > 0
 
 let is_ai t player_id : bool = player_id != 0 && is_id t player_id
 
@@ -414,11 +426,13 @@ let peek (t : t) (num : int) : card_id list =
   let pile = d.cards_left in
   let temp = ref [] in
   let count = ref num in
-  while !count > 0 do
-    temp := !temp @ [ List.nth pile (num - !count) ];
-    count := !count - 1
-  done;
-  !temp
+  if pile = [] then []
+  else (
+    while !count > 0 do
+      temp := !temp @ [ List.nth pile (num - !count) ];
+      count := !count - 1
+    done;
+    !temp)
 
 let peek_print t num : unit =
   let d = fst t in
@@ -452,5 +466,9 @@ let hand_is_empty t player_id : bool =
      |> List.hd in player.hand = [] | false -> false *)
   let p = snd t in
   let f (ele : player) = ele.id = player_id in
-  let player = List.filter f p.ai |> List.hd in
-  player.hand = []
+  try
+    let player = List.filter f p.ai |> List.hd in
+    player.hand = []
+  with Failure _ ->
+    let player = p.user in
+    player.hand = []

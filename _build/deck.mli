@@ -109,6 +109,10 @@ val cards_info : t -> card_rem list
     id is [player_id] to [st]. *)
 val change_state : t -> player_id -> st -> t
 
+(** [mutate_p t player_id st] updates the given player_id in p with
+    argued [player] info *)
+val mutate_p : p -> player -> player_id -> p
+
 (** [draw_card t player_id] let the player whose id is [player_id] to
     draw a card. The player try to draw the head of the deck's
     [cards_left]. If the player tries to draw a bomb, they don't draw it
@@ -126,9 +130,9 @@ val use_card : t -> player_id -> card_name -> int -> t
 
 (** [transfer_card t player_id1 player_id2 card_name] let player1 whose
     id is [player_id1] to transfer the card whose name is [card_name] to
-    player2 whose id is [player_id2]. ** RI: player1 has the card.
-    Should use [player_have_card t player_id1 card_name] to guarantee
-    this RI. *)
+    player2 whose id is [player_id2]. ** RI: player1 has the card and
+    player 1 is not player 2. Should use
+    [player_have_card t player_id1 card_name] to guarantee this RI. *)
 val transfer_card : t -> player_id -> player_id -> card_name -> t * bool
 
 (** [take_card t player_id card_name] let player whose id is [player_id]
