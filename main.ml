@@ -32,6 +32,24 @@ let check_next (e : Move.e) =
   print_endline msg
 
 let play_game f =
+  print_newline ();
+  print_endline "Rules of the game:";
+  print_endline "The goal of game is simple: don't explode.";
+  print_endline
+    "If you draw a bomb, you have to 'Defuse' it, or you explode!.";
+  print_endline "- Players start with 1 'Defuse' and 7 other cards.";
+  print_endline "There are 6 other card types: ";
+  print_endline
+    " - Kittens with names can be combined in pairs & trios.";
+  print_endline "       Pairs allow the user to steal a random card.";
+  print_endline "       Trios allow the user to steal a specific card";
+  print_endline " - Nope: Cancels the next card an opponent uses";
+  print_endline
+    " - See The Future: allows user to see the top 3 in deck";
+  print_endline " - Attack: forces the next player to take 2 turns";
+  print_endline
+    " - Skip: Immediately ends the user's turn without drawing.";
+  print_endline " - Favor: steal a random card from a given player";
   try
     ANSITerminal.print_string [ ANSITerminal.blue ]
       "\n\nValid file name.\n";
