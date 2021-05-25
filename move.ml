@@ -251,24 +251,77 @@ and manage_ai e =
     if curr_state != ATTACKED then (e.next_id + 1) mod e.num_players
     else e.next_id
   in
-  let game =
-    (* Don't draw if AI is skipped *)
-    if curr_state = SKIPPED then Deck.change_state e.game e.curr_id SAFE
-    else
-      (* draw and set state to SAFE *)
-      let temp, name = Deck.draw_card e.game curr_id in
-      if debug then
-        print_endline
-          ("Player " ^ (e.curr_id |> string_of_int) ^ " drew: " ^ name)
-      else
-        print_endline
-          ("Player " ^ (e.curr_id |> string_of_int) ^ " drew a card.");
-      Deck.change_state temp e.curr_id SAFE
-  in
-  let e = { e with game; curr_id = next_curr; next_id = next_next } in
-  let p = snd e.game in
-  if debug then print_player p curr_id;
-  turn_start e
+  (* Don't draw if AI is skipped *)
+  match curr_state with
+  | DEAD ->
+      let e = { e with curr_id = next_curr; next_id = next_next } in
+      let p = snd e.game in
+      if debug then print_player p curr_id;
+      turn_start e
+  | SKIPPED ->
+      let game = Deck.change_state e.game e.curr_id SAFE in
+      let e =
+        { e with game; curr_id = next_curr; next_id = next_next }
+      in
+      let p = snd e.game in
+      if debug then print_player p curr_id;
+      turn_start e
+  | BOMBED ->
+      let game =
+        if Deck.player_have_card e.game curr_id "Defuse" then (
+          print_endline
+            ("AI player " ^ string_of_int curr_id
+           ^ " draws a BOMB but it decides to use 'Defuse'! What a \
+              genius");
+          Deck.use_card e.game curr_id "Defuse" 1)
+        else (
+          print_endline
+            ("AI player " ^ string_of_int curr_id ^ " is dead!");
+          Deck.change_state e.game e.curr_id DEAD)
+      in
+      let e =
+        if Deck.check_state e.game curr_id = DEAD then
+          { e with game; curr_id = next_curr; next_id = next_next }
+        else
+          {
+            e with
+            game;
+            num_alive = e.num_alive - 1;
+            curr_id = next_curr;
+            next_id = next_next;
+          }
+      in
+      let p = snd e.game in
+      if debug then print_player p curr_id;
+
+      (* ------------------ IF ALL DEAD THEN CLAIM WIN --------------- *)
+      (* ------------------ IF ALL DEAD THEN CLAIM WIN --------------- *)
+      (* ------------------ IF ALL DEAD THEN CLAIM WIN --------------- *)
+      turn_start e
+  | _ ->
+      let game =
+        (* draw and set state to SAFE *)
+        let temp, name =
+          print_endline
+            ("AI player " ^ string_of_int curr_id
+           ^ " draws a card and end its turn.");
+          Deck.draw_card e.game curr_id
+          (* put the bomb bck *)
+        in
+        if debug then
+          print_endline
+            ("Player " ^ (e.curr_id |> string_of_int) ^ " drew: " ^ name)
+        else
+          print_endline
+            ("Player " ^ (e.curr_id |> string_of_int) ^ " drew a card.");
+        Deck.change_state temp e.curr_id SAFE
+      in
+      let e =
+        { e with game; curr_id = next_curr; next_id = next_next }
+      in
+      let p = snd e.game in
+      if debug then print_player p curr_id;
+      turn_start e
 
 and prompt_user e msg =
   let curr_state = Deck.check_state e.game e.curr_id in
