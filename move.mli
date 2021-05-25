@@ -81,22 +81,33 @@ val noped_remove : e -> player_id -> e
     game.*)
 val manage_bombed : e -> e
 
-(** [use_attack] uses the Attack card for the current player. Their turn
-    is immediately ended, and if they were ATTACKED before, they are
-    SAFE now. The next player's state is changed to ATTACKED. *)
+(** [prompt_attack] prompts the Attack card for the current player.
+    Their turn is immediately ended, and if they were ATTACKED before,
+    they are SAFE now. The next player's state is changed to ATTACKED. *)
+val prompt_attack : e -> e
+
+(** [use_attack e ] uses the Nope card for the current player.*)
 val use_attack : e -> e
 
-(** [use_nope] uses the Nope card for the current player. The player is
-    prompted to provide a non-human player id to be added to the Noped
-    list. Players on the Noped list have their next non-Defuse action
-    cancelled. *)
-val use_nope : e -> e
+(** [prompt_nope] prompts the Nope card for the current player. The
+    player is prompted to provide a non-human player id to be added to
+    the Noped list. Players on the Noped list have their next non-Defuse
+    action cancelled. *)
+val prompt_nope : e -> e
 
-(** [use_favor] uses the Favor card for the current player.The player is
-    prompted to provide a non-human player id to steal a random card
-    from and then steals from that player. If the player's hand is
-    empty, another player id must be specified. *)
-val use_favor : e -> e
+(** [use_nope e i] uses the Nope card for the current player on player
+    [i]*)
+val use_nope : e -> player_id -> e
+
+(** [prompt_favor] prompts the Favor card for the current player.The
+    player is prompted to provide a non-human player id to steal a
+    random card from and then steals from that player. If the player's
+    hand is empty, another player id must be specified. *)
+val prompt_favor : e -> e
+
+(** [use_favor e i] uses the Favor card for the current player on player
+    [i]*)
+val use_favor : e -> player_id -> e
 
 (** [use_future] uses the Future card for the current player. The top
     three cards' names are printed onto the command line. *)
