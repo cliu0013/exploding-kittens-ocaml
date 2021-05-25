@@ -2,21 +2,26 @@ open OUnit2
 open Deck
 open Move
 
-(* Test Plan: The functions in the Deck module which are responsible for
+(* Test Plan:
+
+   The functions in the Deck module which are responsible for
    representing a deck of cards for the game and a couple of basic
    functions on a deck were automatically tested by OUnit as they do not
    require manual user inputs in the terminal. The functions in the Move
    and main modules which run the game and handle game events and player
    interaction were tested manually as they require repeated manual user
-   inputs in the terminal. For OUnit testing, test cases which aimed to
-   test general functionality were developed with a black-box approach
-   while test cases addressing edge cases were developed with a
-   glass-box approach For manual testing, user inputs and the parameters
-   for the game were developed with a black-box approach while
-   randomization contained in CPU player moves for example helped find
-   edge cases. Because the rules of Exploding Kittens are well defined
-   and relatively straightforward, black-box testing based on mechanics
-   of the game has been an effective testing strategy for determining if
+   inputs in the terminal.
+
+   For OUnit testing, test cases which aimed to test general
+   functionality were developed with a black-box approach while test
+   cases addressing edge cases were developed with a glass-box approach
+   For manual testing, user inputs and the parameters for the game were
+   developed with a black-box approach while randomization contained in
+   CPU player moves for example helped find edge cases.
+
+   Because the rules of Exploding Kittens are well defined and
+   relatively straightforward, black-box testing based on mechanics of
+   the game has been an effective testing strategy for determining if
    our game generally runs correctly. For edge cases and rare situations
    in game, the randomized moves that CPU players during much of our
    playtesting in addition to targeted glass-box testing allowed us to
