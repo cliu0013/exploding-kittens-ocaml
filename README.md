@@ -1,1 +1,3 @@
-# cs3110-ms
+# CS3110 final project
+
+The vision for this project is to create an OCaml version of the Exploding Kittens card game. Until the previous sprints, which featured the ability to draw a card and to judge the losing condition of the game, we have added functionality that allows the user to use all types of the cards and/or pass their turn, to interact with the command line, and to judge the winning condition. We also enabled AI players to respond to a bomb and to draw cards, and also have some ‘mercy’. The human user could have a good chance of defeating the AI players for now, if the AI players are merciful enough.
